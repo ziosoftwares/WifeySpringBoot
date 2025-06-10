@@ -1,0 +1,60 @@
+package com.zio.apis;
+
+import com.zio.util.ZioException;
+import com.zio.data.dto.IngredDTO;
+import com.zio.data.dto.MealDTO;
+import com.zio.data.dto.RecipeDTO;
+import com.zio.service.CreationService;
+import com.zio.service.PlanService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("public")
+public class RecipeController {
+
+    @Autowired
+    CreationService creationService;
+
+    @Autowired
+    PlanService planService;
+
+    @PostMapping("meal")
+    public ResponseEntity<String> addMeal(@RequestBody MealDTO meal) throws ZioException {
+        return ResponseEntity.ok("done" + creationService.makeMeal(meal));
+    }
+
+    @PostMapping("meals")
+    public ResponseEntity<String> addMeals(@RequestBody List<MealDTO> meal) {
+        creationService.makeMeals(meal);
+        return ResponseEntity.ok("done all");
+    }
+
+    @PostMapping("recipe")
+    public ResponseEntity<String> addRecipe(@RequestBody RecipeDTO recipe) {
+        return ResponseEntity.ok("done" + creationService.makeRecipe(recipe));
+    }
+
+    @PostMapping("recipes")
+    public ResponseEntity<String> addRecipes(@RequestBody List<RecipeDTO> recipe) {
+        creationService.makeRecipes(recipe);
+        return ResponseEntity.ok("done");
+    }
+
+    @PostMapping("ingred")
+    public ResponseEntity<String> addIngred(@RequestBody IngredDTO ingred) {
+        return ResponseEntity.ok("done" + creationService.makeIngred(ingred));
+    }
+
+    @PostMapping("ingreds")
+    public ResponseEntity<String> addIngreds(@RequestBody List<IngredDTO> ingreds) {
+        creationService.makeIngreds(ingreds);
+        return ResponseEntity.ok("done all");
+    }
+}

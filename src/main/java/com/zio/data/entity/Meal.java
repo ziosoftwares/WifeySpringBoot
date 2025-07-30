@@ -1,4 +1,4 @@
-package com.zio.data.entity.meal;
+package com.zio.data.entity;
 
 import java.util.Set;
 

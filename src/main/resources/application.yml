@@ -10,6 +10,32 @@ spring:
     hibernate:
       ddl-auto: update
 
+  web:
+    resources:
+      add-mappings: false
+
+  security:
+    user:
+      name: "user"
+      password: "{noop}password"
+
+  http:
+    log-request-details=true:
 server:
-  address: 192.168.0.199
+#  address: 192.168.1.7
+#  address: 10.244.6.209
+#  address: 192.168.21.209
+#  address: 192.168.197.209
+#  address: 192.168.0.199
   port: 8001
+
+jwt:
+  secret: "lailaMajnu@30035-extrasforlength"
+
+logging:
+  include-application-name: false
+  level:
+    org.springframework.security.web.util.matcher: TRACE
+    org.springframework.security.web.FilterChainProxy: TRACE
+    org.springframework.web.servlet.DispatcherServlet: TRACE
+    org.springframework.web.servlet.handler.AbstractHandlerMapping: TRACE

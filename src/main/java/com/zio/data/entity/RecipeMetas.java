@@ -1,4 +1,4 @@
-package com.zio.data.entity.meal;
+package com.zio.data.entity;
 
 
 import java.util.Set;
@@ -19,15 +19,10 @@ import lombok.NoArgsConstructor;
 public class RecipeMetas {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private Integer maxTime;
-
+    private Integer duration;
     @Enumerated
     private Difficulty difficulty;
-
     @Enumerated
     private Diet diet;
     @Enumerated
@@ -36,7 +31,12 @@ public class RecipeMetas {
     @ElementCollection
     @Enumerated
     @JoinTable(name = "RecipeAllergens",
-            joinColumns = @JoinColumn(name = "metaId"))
+            joinColumns = @JoinColumn(name = "recipeId"))
     private Set<Allergen> allergens;
+
+    @OneToOne
+    @JoinColumn(name = "id")
+    @MapsId
+    private Recipe recipe;
 
 }

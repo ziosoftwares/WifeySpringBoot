@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +24,6 @@ public class RecipeMetasDTO {
     private Diet diet;
     private Cuisine cuisine;
 
-    private EnumSet<Allergen> allergens;
+    private Set<Allergen> allergens;
 
 }

@@ -1,4 +1,4 @@
-package com.zio.data.entity.meal;
+package com.zio.data.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,14 +8,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Embeddable
 public class Nutrients {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false, scale = 2)
     private Double calories, fat, protein, carbs;
+
+    public Nutrients(Nutrients source) {
+        this.calories = source.calories;
+        this.fat = source.fat;
+        this.protein = source.protein;
+        this.carbs = source.carbs;
+    }
 }
 

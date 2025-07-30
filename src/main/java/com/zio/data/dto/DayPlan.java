@@ -1,6 +1,6 @@
 package com.zio.data.dto;
 
-import com.zio.data.entity.meal.Meal;
+import com.zio.data.entity.Meal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

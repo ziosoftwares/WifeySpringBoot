@@ -1,8 +1,10 @@
 package com.zio.service;
 
+import com.zio.data.dto.DayPlanDTO;
+import com.zio.data.dto.IdNameDTO;
 import com.zio.util.ZioException;
 import com.zio.data.dto.DayPlan;
-import com.zio.data.entity.meal.Meal;
+import com.zio.data.entity.Meal;
 import com.zio.data.entity.Preferences;
 import com.zio.data.Allergen;
 import com.zio.repo.MealRepo;
@@ -48,20 +50,31 @@ public class PlanService {
         return 0;
     }
 
-    public List<DayPlan> makePlanForDays(int days, Long userId) throws ZioException {
+    public List<DayPlanDTO> makePlanForDays(int days, Long userId) throws ZioException {
 
         /// just sequentially delivering now
 
         List<Meal> mealsByPref = getMealsByPrefs(userId);
         List<Meal> meals = sortByMatchScore(userId, mealsByPref);
 
-        List<DayPlan> result = new ArrayList<>();
+        List<DayPlanDTO> result = new ArrayList<>();
         for (int i = 0; i < days; i++) {
-            result.add(new DayPlan(meals.get(i * 3), meals.get(i * 3 + 1), meals.get(i * 3 + 2)));
+            result.add(new DayPlanDTO(
+                    new IdNameDTO(meals.get(i * 3).getId(), meals.get(i * 3).getName()),
+                    new IdNameDTO(meals.get(i * 3 + 1).getId(), meals.get(i * 3 + 1).getName()),
+                    new IdNameDTO(meals.get(i * 3 + 2).getId(), meals.get(i * 3 + 2).getName())
+            ));
         }
 
         return result;
     }
 
 
+    public DayPlanDTO makeDayPlan(Long userId) throws ZioException {
+        List<Meal> mealsByPref = getMealsByPrefs(userId);
+        List<Meal> meals = sortByMatchScore(userId, mealsByPref);
+
+        var list = meals.stream().limit(3).map(m -> new IdNameDTO(m.getId(), m.getName())).toList();
+        return new DayPlanDTO(list.get(0), list.get(1), list.get(2));
+    }
 }

@@ -1,4 +1,4 @@
-package com.zio.data.entity.meal;
+package com.zio.data.entity;
 
 
 import com.zio.wifey.data.recipe.FoodType;
@@ -24,8 +24,7 @@ public class Ingred {
     @Enumerated
     private FoodType type;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
-    @JoinColumn(name = "nutrientsId")
+    @Embedded
     private Nutrients nutrients;
 
     @Enumerated

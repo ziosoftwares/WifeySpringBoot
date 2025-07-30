@@ -8,16 +8,16 @@ import com.zio.service.CreationService;
 import com.zio.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("public")
-public class RecipeController {
+@RequestMapping("create")
+/***
+ * controller for creation of resources, ensure user has auth to access
+ */
+public class CreateController {
 
     @Autowired
     CreationService creationService;

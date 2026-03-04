@@ -48,6 +48,7 @@ public class CreationService {
         recipe.setDetails(mapper.map(recipeDTO.getDetails(), RecipeDetails.class));
         recipe.setMetas(mapper.map(recipeDTO.getMetas(), RecipeMetas.class));
         recipe.getDetails().setIngredients(getIngredList(recipeDTO.getDetails().getIngredients(), recipe.getDetails()));
+        recipe.getDetails().getInstructions().forEach(i -> i.setDetails(recipe.getDetails()));
 
         recipe.getDetails().setId(null);
         recipe.getDetails().setRecipe(recipe);

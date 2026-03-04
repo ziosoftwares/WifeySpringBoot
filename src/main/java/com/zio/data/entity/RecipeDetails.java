@@ -16,8 +16,8 @@ public class RecipeDetails {
     @Id
     private Long id;
 
-    @Column(columnDefinition = "LONGTEXT", nullable = false)
-    private String instructions;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "details", orphanRemoval = true)
+    private List<Instruction> instructions;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "details", orphanRemoval = true)
     private List<IngredQuantity> ingredients;

@@ -29,32 +29,36 @@ public class UserService {
 
     ModelMapper mapper = new ModelMapper();
 
-    public Long createUser(User user) throws ZioException {
-        if (userRepo.findByName(user.getName()).isPresent())
+    public String signin(LoginDTO loginDTO) throws ZioException {
+        User user = userRepo.findByEmail(loginDTO.email).orElseThrow(() -> new ZioException("NO_SUCH_USER"));
+        return jwtUtil.buildToken(user.getId());
+    }
+
+    public String signup(User user) throws ZioException {
+        if (userRepo.findByEmail(user.getEmail()).isPresent())
+            throw new ZioException("EMAIL_EXISTS");
+        if (userRepo.findByUserName(user.getUserName()).isPresent())
             throw new ZioException("USERNAME_EXISTS");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.save(user).getId();
+        return jwtUtil.buildToken(userRepo.save(user).getId());
     }
 
     public void updatePrefs(Preferences preferences) {
         preferenceRepo.save(preferences);
     }
 
-    public PreferencesDTO getPreference(Long userId) {
-        Preferences preferences = preferenceRepo.getReferenceById(userId);
+    public PreferencesDTO getPreference(Long userId) throws ZioException {
+        Preferences preferences = preferenceRepo.findById(userId).orElseThrow(() -> new ZioException("NO_PREFS"));
+
+        System.out.println("preferences = " + preferences);
         PreferencesDTO dto = new PreferencesDTO();
         dto.setAllergens(preferences.getAllergens().clone());
         dto.setCuisines(preferences.getCuisines().clone());
         dto.setDiets(preferences.getDiets().clone());
+
         return dto;
     }
 
-    public String login(LoginDTO loginDTO) throws ZioException {
-        User user = userRepo.findByName(loginDTO.name).orElseThrow(() -> new ZioException("NO_SUCH_USER"));
-
-        if (!passwordEncoder.matches(loginDTO.password, user.getPassword()))
-            throw new ZioException("WRONG_CREDS");
-
-        return jwtUtil.buildToken(user.getId());
+    public Boolean verify(Long userId) {
+        return userRepo.existsById(userId);
     }
 }

@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.EnumSet;
 import java.util.Set;
 
 @Data
@@ -18,7 +17,7 @@ import java.util.Set;
 public class RecipeMetasDTO {
 
     private Long id;
-    private Integer maxTime;
+    private Integer duration;
     private Difficulty difficulty;
 
     private Diet diet;

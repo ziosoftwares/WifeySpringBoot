@@ -2,7 +2,6 @@ package com.zio.service;
 
 import com.zio.data.dto.*;
 import com.zio.data.entity.Ingred;
-import com.zio.data.entity.IngredQuantity;
 import com.zio.data.entity.Meal;
 import com.zio.data.entity.Nutrients;
 import com.zio.repo.IngredRepo;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,20 +31,20 @@ public class QueryService {
 
     private final ModelMapper mapper = new ModelMapper();
 
-    public List<IdNameDTO> getIngredsLike(String name) {
-        List<IdNameDTO> result = ingredRepo.findIngredLike(name + "%", PageRequest.of(0, 10));
+    public List<GeneralDTO> getIngredsLike(String name) {
+        List<GeneralDTO> result = ingredRepo.findIngredLike(name + "%", PageRequest.of(0, 10));
         if (result.isEmpty()) result = ingredRepo.findIngredLike("%" + name + "%", PageRequest.of(0, 10));
         return result;
     }
 
-    public List<IdNameDTO> getRecipeLike(String name) {
-        List<IdNameDTO> result = recipeRepo.findRecipeLike(name + "%", PageRequest.of(0, 10));
+    public List<GeneralDTO> getRecipeLike(String name) {
+        List<GeneralDTO> result = recipeRepo.findRecipeLike(name + "%", PageRequest.of(0, 10));
         if (result.isEmpty()) result = recipeRepo.findRecipeLike("%" + name + "%", PageRequest.of(0, 10));
         return result;
     }
 
-    public List<IdNameDTO> getMealsLike(String name) {
-        List<IdNameDTO> result = mealRepo.findMealLike(name + "%", PageRequest.of(0, 10));
+    public List<GeneralDTO> getMealsLike(String name) {
+        List<GeneralDTO> result = mealRepo.findMealLike(name + "%", PageRequest.of(0, 10));
         if (result.isEmpty()) result = mealRepo.findMealLike("%" + name + "%", PageRequest.of(0, 10));
         return result;
     }

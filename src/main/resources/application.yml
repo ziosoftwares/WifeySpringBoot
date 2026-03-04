@@ -21,13 +21,16 @@ spring:
 
   http:
     log-request-details=true:
+
+
 server:
-#  address: 192.168.1.7
-#  address: 10.244.6.209
-#  address: 192.168.21.209
-#  address: 192.168.197.209
-#  address: 192.168.0.199
+#  address: 192.168.100.137
+  address: 192.168.0.21
   port: 8001
+
+ai:
+  url: "http://localhost:8000/"
+  method: "/generate_remote"
 
 jwt:
   secret: "lailaMajnu@30035-extrasforlength"

@@ -1,12 +1,10 @@
 package com.zio.service;
 
-import com.zio.data.dto.IdNameDTO;
+import com.zio.data.dto.GeneralDTO;
+import com.zio.data.dto.RecipeDTO;
 import com.zio.data.entity.Recipe;
-import com.zio.repo.IngredRepo;
-import com.zio.repo.MealRepo;
 import com.zio.repo.RecipeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,18 +18,18 @@ public class ClientService {
     @Autowired
     RecipeRepo recipeRepo;
 
-    @Autowired
-    IngredRepo ingredRepo;
-
-    @Autowired
-    MealRepo mealRepo;
-
-    public List<IdNameDTO> getFeatured() {
+    public List<GeneralDTO> getFeatured() {
 
         Sort sort = Sort.by("id").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);
         List<Recipe> recipes = recipeRepo.findAll(pageable).getContent();
 
-        return recipes.stream().map(r -> new IdNameDTO(r.getId(), r.getName())).toList();
+        return recipes.stream().map(r -> new GeneralDTO(r.getId(), r.getName())).toList();
+    }
+
+    public RecipeDTO getFeaturedRecipe() {
+        return recipeRepo.findAll(PageRequest.of(0, 1))
+                .map(recipe -> new RecipeDTO(recipe.getId(), recipe.getName(), null, null))
+                .stream().findFirst().get();
     }
 }

@@ -1,5 +1,6 @@
 package com.zio.apis;
 
+import com.zio.data.api.Response;
 import com.zio.util.ZioException;
 import com.zio.data.dto.IngredDTO;
 import com.zio.data.dto.MealDTO;
@@ -37,8 +38,8 @@ public class CreateController {
     }
 
     @PostMapping("recipe")
-    public ResponseEntity<String> addRecipe(@RequestBody RecipeDTO recipe) {
-        return ResponseEntity.ok("done" + creationService.makeRecipe(recipe));
+    public Response<Long> addRecipe(@RequestBody RecipeDTO recipe) {
+        return Response.ok(creationService.makeRecipe(recipe));
     }
 
     @PostMapping("recipes")

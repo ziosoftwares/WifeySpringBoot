@@ -1,5 +1,6 @@
 package com.zio.util;
 
+import com.zio.data.api.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,12 @@ public class AspectExceptions {
         log.error(exception.getMessage());
         return new ResponseEntity<>("check logs", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ZioException.class)
+    public Response zioException(ZioException exception) {
+        log.error(exception.getMessage());
+        return Response.error(HttpStatus.BAD_REQUEST, exception.getMessage(), 1);
+    }
+
 
 }

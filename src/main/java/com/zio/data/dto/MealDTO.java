@@ -12,9 +12,7 @@ import java.util.Set;
 public class MealDTO {
 
     private Long id;
-
     private String name;
-
     private Long main;
     private Set<Long> sides;
 }

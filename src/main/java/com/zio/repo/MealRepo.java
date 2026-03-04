@@ -1,6 +1,6 @@
 package com.zio.repo;
 
-import com.zio.data.dto.IdNameDTO;
+import com.zio.data.dto.GeneralDTO;
 import com.zio.data.entity.Meal;
 import com.zio.data.Allergen;
 import com.zio.data.Cuisine;
@@ -43,8 +43,8 @@ public interface MealRepo extends JpaRepository<Meal, Long> {
                                     @Param("allergens") List<Allergen> allergens);
 
 
-    @Query("select new com.zio.data.dto.IdNameDTO(i.id, i.name) from Meal i where lower(i.name) like lower(?1)")
-    List<IdNameDTO> findMealLike(String s, PageRequest of);
+    @Query("select new com.zio.data.dto.GeneralDTO(i.id, i.name) from Meal i where lower(i.name) like lower(?1)")
+    List<GeneralDTO> findMealLike(String s, PageRequest of);
 
     @Query(value = """
             SELECT ingred_id AS ingredId, SUM(total_quantity) AS quantity

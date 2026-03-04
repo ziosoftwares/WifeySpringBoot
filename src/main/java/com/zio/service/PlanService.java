@@ -1,9 +1,10 @@
 package com.zio.service;
 
+import com.zio.client.AiClient;
 import com.zio.data.dto.DayPlanDTO;
-import com.zio.data.dto.IdNameDTO;
+import com.zio.data.dto.GeneralDTO;
+import com.zio.data.dto.MealsRequest;
 import com.zio.util.ZioException;
-import com.zio.data.dto.DayPlan;
 import com.zio.data.entity.Meal;
 import com.zio.data.entity.Preferences;
 import com.zio.data.Allergen;
@@ -11,8 +12,10 @@ import com.zio.repo.MealRepo;
 import com.zio.repo.PreferenceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,8 @@ public class PlanService {
     private MealRepo mealRepo;
     @Autowired
     private PreferenceRepo preferenceRepo;
+    @Autowired
+    private AiClient aiClient;
 
     final private String tag = getClass().getName();
 
@@ -50,31 +55,41 @@ public class PlanService {
         return 0;
     }
 
-    public List<DayPlanDTO> makePlanForDays(int days, Long userId) throws ZioException {
+    public Mono<List<DayPlanDTO>> makePlanForDays(int days, Long userId) throws ZioException {
 
-        /// just sequentially delivering now
+        List<Meal> meals = getMealsByPrefs(userId);
+        List<GeneralDTO> mealOptions = meals.stream().limit(30L).map(Meal::map).toList();
+//        List<Meal> meals = sortByMatchScore(userId, mealsByPref);
 
-        List<Meal> mealsByPref = getMealsByPrefs(userId);
-        List<Meal> meals = sortByMatchScore(userId, mealsByPref);
+        System.out.println("mealOptions = " + mealOptions);
 
-        List<DayPlanDTO> result = new ArrayList<>();
-        for (int i = 0; i < days; i++) {
-            result.add(new DayPlanDTO(
-                    new IdNameDTO(meals.get(i * 3).getId(), meals.get(i * 3).getName()),
-                    new IdNameDTO(meals.get(i * 3 + 1).getId(), meals.get(i * 3 + 1).getName()),
-                    new IdNameDTO(meals.get(i * 3 + 2).getId(), meals.get(i * 3 + 2).getName())
-            ));
-        }
+        return generatePlan(new MealsRequest(days, mealOptions));
 
-        return result;
+
+    }
+
+    private Mono<List<DayPlanDTO>> generatePlan(MealsRequest request) {
+        return aiClient.generate(request).flatMap(result -> {
+            List<DayPlanDTO> plan = new ArrayList<>();
+            for (int i = 0; i < request.getDays(); i++) {
+                plan.add(new DayPlanDTO(
+                        findDTO(request.getOptions(), result.get(i * 3)),
+                        findDTO(request.getOptions(), result.get(i * 3 + 1)),
+                        findDTO(request.getOptions(), result.get(i * 3 + 2))
+                ));
+            }
+            return Mono.just(plan);
+        });
+    }
+
+    private GeneralDTO findDTO(List<GeneralDTO> options, long id) {
+        return options.get(
+                Collections.binarySearch(options, new GeneralDTO(id, ""))
+        );
     }
 
 
-    public DayPlanDTO makeDayPlan(Long userId) throws ZioException {
-        List<Meal> mealsByPref = getMealsByPrefs(userId);
-        List<Meal> meals = sortByMatchScore(userId, mealsByPref);
-
-        var list = meals.stream().limit(3).map(m -> new IdNameDTO(m.getId(), m.getName())).toList();
-        return new DayPlanDTO(list.get(0), list.get(1), list.get(2));
+    public Mono<DayPlanDTO> makeDayPlan(Long userId) throws ZioException {
+        return makePlanForDays(1, userId).flatMap(res -> Mono.just(res.getFirst()));
     }
 }

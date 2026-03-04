@@ -2,6 +2,7 @@ package com.zio.data.entity;
 
 import java.util.Set;
 
+import com.zio.data.dto.GeneralDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,4 +30,8 @@ public class Meal {
             joinColumns = @JoinColumn(name = "mealId"),
             inverseJoinColumns = @JoinColumn(name = "sideId"))
     private Set<Recipe> sides;
+
+    public GeneralDTO map() {
+        return new GeneralDTO(id, name);
+    }
 }

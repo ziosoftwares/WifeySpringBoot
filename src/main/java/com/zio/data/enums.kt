@@ -2,19 +2,20 @@ package com.zio.wifey.data.recipe
 
 
 enum class FoodType {
-    VEG,    // Vegetables
+    VEGGIES,    // Vegetables
     MEAT,
     GROCERY, // Everything else
-    FRUIT,
+    FRUITS,
 }
 
-enum class Units {
-    GRAM,
-    LITERS,
-    CUPS,
-    TABLESPOONS,
-    TEASPOONS,
-    PIECES,
-    NONE // For ingredients where the unit is not applicable
+
+enum class Units(val textualRep: String) {
+    GRAM("g"),
+    LITERS("l"),
+    CUPS("cps"),
+    TABLESPOONS("sp"),
+    TEASPOONS("sp"),
+    PIECES("pcs"),
+    NONE(""); // For ingredients where the unit is not applicable
 }
 

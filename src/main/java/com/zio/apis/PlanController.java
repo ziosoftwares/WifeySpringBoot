@@ -29,13 +29,13 @@ public class PlanController {
     @GetMapping("days/{days}")
     public ResponseEntity<List<DayPlanDTO>> makePlanForDays(Integer days) throws ZioException {
         userId = (Long) getRequestingUser();
-        return ResponseEntity.ok(planService.makePlanForDays(days, userId));
+        return ResponseEntity.ok(planService.makePlanForDays(days, userId).block());
     }
 
     @GetMapping("day")
     public ResponseEntity<DayPlanDTO> makeDayPlan() throws ZioException {
         userId = (Long) getRequestingUser();
-        return ResponseEntity.ok(planService.makeDayPlan(userId));
+        return ResponseEntity.ok(planService.makeDayPlan(userId).block());
     }
 
     private Object getRequestingUser() {

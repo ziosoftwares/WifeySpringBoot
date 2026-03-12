@@ -14,5 +14,6 @@ public class MealDTO {
     private Long id;
     private String name;
     private Long main;
+    private String imgUrl;
     private Set<Long> sides;
 }

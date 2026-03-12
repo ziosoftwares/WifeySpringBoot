@@ -5,6 +5,8 @@ import com.zio.data.dto.*;
 import com.zio.service.QueryService;
 import com.zio.util.ZioException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,9 @@ import java.util.List;
  * controller only for simple retrievals from db
  */
 public class QueryController {
+
+    @Value("${content.recipe}")
+    private String recipeDir;
 
     @Autowired
     QueryService queryService;
@@ -59,5 +64,6 @@ public class QueryController {
     ResponseEntity<MealFullDTO> getMealById(@PathVariable Long id) throws ZioException {
         return ResponseEntity.ok(queryService.getMealById(id));
     }
+
 
 }

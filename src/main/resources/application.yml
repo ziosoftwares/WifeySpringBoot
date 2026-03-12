@@ -18,13 +18,19 @@ spring:
     user:
       name: "user"
       password: "{noop}password"
-
   http:
     log-request-details=true:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
+
+content:
+  recipe: "content/recipe"
 
 server:
-#  address: 192.168.100.137
+  #  address: 192.168.100.137
   address: 192.168.0.21
   port: 8001
 

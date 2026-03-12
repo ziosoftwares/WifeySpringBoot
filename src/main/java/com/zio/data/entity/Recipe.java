@@ -1,5 +1,6 @@
 package com.zio.data.entity;
 
+import com.zio.data.dto.GeneralDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 public class Recipe {
 
@@ -18,6 +18,11 @@ public class Recipe {
 
     @Column(nullable = false)
     private String name;
+
+    private String imgUrl;
+
+    @ManyToOne(optional = false)
+    private User author;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "recipe", orphanRemoval = true, optional = false)
     private RecipeMetas metas;
@@ -35,6 +40,10 @@ public class Recipe {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public GeneralDTO makeGeneralDTO() {
+        return new GeneralDTO(id, name, null, imgUrl, author.getUserName());
     }
 }
 

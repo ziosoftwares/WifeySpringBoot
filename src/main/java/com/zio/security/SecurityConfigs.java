@@ -12,6 +12,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /*
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfigs {
+public class SecurityConfigs implements WebMvcConfigurer {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -41,6 +43,15 @@ public class SecurityConfigs {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("/public/recipeImages/*")
+                .addResourceLocations("file:content/recipe/");
+        registry.addResourceHandler("/public/ingredImages/*")
+                .addResourceLocations("file:content/ingreds/");
     }
 
     @Bean

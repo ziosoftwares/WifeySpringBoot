@@ -13,6 +13,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class RecipeDetailsDTO {
     private Long id;
-    private Map<Long, Double> ingredients;  // key=id of ingred, value = quantity required for this recipe
+    private Map<Long, Double> ingredients;  // key=id of ingred, value = quantity required for this recipe based on units of it
     private List<InstructionDTO> instructions;
 }

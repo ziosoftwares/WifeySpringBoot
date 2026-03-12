@@ -28,8 +28,8 @@ public class ClientController {
     }
 
     @GetMapping("featured/recipes")
-    ResponseEntity<List<GeneralDTO>> getFeaturedRecipes() {
-        return ResponseEntity.ok(clientService.getFeatured());
+    List<RecipeDTO> getFeaturedRecipes() {
+        return clientService.getFeatured();
     }
 
 

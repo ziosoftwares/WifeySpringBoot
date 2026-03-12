@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface IngredRepo extends JpaRepository<Ingred, Long> {
 
-    @Query("select new com.zio.data.dto.GeneralDTO(i.id, i.name, i.unit) from Ingred i where lower(i.name) like lower(?1)")
-    List<GeneralDTO> findIngredLike(String name, Pageable pageable);
+    List<Ingred> findByNameLike(String name, Pageable pageable);
 
 }

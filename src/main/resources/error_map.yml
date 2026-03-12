@@ -1,0 +1,19 @@
+404:
+  1: NO_SUCH_USER
+  2: NO_SUCH_MEAL_ID
+  3: NO_SUCH_RECIPE
+  4: NO_SUCH_INGRED
+  5: NO_PREFS
+409:
+  1: EMAIL_EXISTS
+  2: USERNAME_EXISTS
+
+500:
+  1: UnknownError
+
+#File management
+510:
+  1: UNABLE_TO_PERSIST
+#user and session management
+515:
+  1: NO_SESSION

@@ -1,12 +1,23 @@
 spring:
   application:
     name: wifey
+
+  datasource:
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
+
   web:
     resources:
       add-mappings: false
+
+  security:
+    user:
+      name: "user"
+      password: "{noop}password"
   http:
     log-request-details=true:
   servlet:
@@ -14,8 +25,19 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+
 content:
   recipe: "content/recipe"
+
+server:
+  port: ${PORT:8081}
+
+ai:
+  url: "http://localhost:8000/"
+  method: "/generate_remote"
+
+jwt:
+  secret: "lailaMajnu@30035-extrasforlength"
 
 logging:
   include-application-name: false

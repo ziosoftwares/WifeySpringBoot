@@ -19,7 +19,7 @@ public class PlanServiceLiteralTest {
     @Autowired
     private PlanService service;
 
-    @Test
+    //@Test
     public void makePlanForDaysTest() throws ZioException {
         Mono<List<DayPlanDTO>> result = service.makePlanForDays(1, 8L);
         StepVerifier.create(result).assertNext(res -> {

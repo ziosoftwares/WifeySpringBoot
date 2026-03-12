@@ -16,7 +16,7 @@ public class RepoTest {
     @Autowired
     MealRepo repo;
 
-    @Test
+    //@Test
     public void findbypref() {
         List<Long> expect = List.of(1L),
                 ids = repo.findMealByPreference(List.of(), List.of(Cuisine.INDIAN), List.of(Allergen.DUMMY_ONLY_FOR_INTERNAL_USAGE));

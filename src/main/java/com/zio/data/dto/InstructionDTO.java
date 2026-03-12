@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InstructionDTO {
 
-    private Integer id;
-    private Integer duration;
+    private Integer id;         //step count
+    private Integer duration;   //in mins
     private String instruction;
 
 }

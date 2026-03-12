@@ -1,6 +1,7 @@
 package com.zio.service;
 
 import com.zio.client.AiClient;
+import com.zio.data.api.Error;
 import com.zio.data.dto.DayPlanDTO;
 import com.zio.data.dto.GeneralDTO;
 import com.zio.data.dto.MealsRequest;
@@ -33,13 +34,12 @@ public class PlanService {
 
     public List<Meal> getMealsByPrefs(Long userId) throws ZioException {
 
-        Preferences prefs = preferenceRepo.findById(userId).orElseThrow(() -> new ZioException(tag + ".NO_PREFS"));
+        Preferences prefs = preferenceRepo.findById(userId).orElseThrow(() -> new ZioException(new Error(404, "NO_PREFS", 5)));
         ArrayList<Allergen> allergenList = new ArrayList<>();
-        allergenList.add(Allergen.DUMMY_ONLY_FOR_INTERNAL_USAGE); //mandatory to avoid sql exception of invalid query
+        allergenList.add(Allergen.DUMMY_ONLY_FOR_INTERNAL_USAGE); //mandatory to avoid sql invalid query exception
         allergenList.addAll(prefs.getAllergens());
 
         List<Long> filteredIds = mealRepo.findMealByPreference(new ArrayList<>(prefs.getDiets()), new ArrayList<>(prefs.getCuisines()), allergenList);
-        if (filteredIds.isEmpty()) throw new ZioException(tag + ".TOO_NARROW_PREFS");
         return mealRepo.findAllById(filteredIds);
     }
 
@@ -58,10 +58,8 @@ public class PlanService {
     public Mono<List<DayPlanDTO>> makePlanForDays(int days, Long userId) throws ZioException {
 
         List<Meal> meals = getMealsByPrefs(userId);
-        List<GeneralDTO> mealOptions = meals.stream().limit(30L).map(Meal::map).toList();
+        List<GeneralDTO> mealOptions = meals.stream().limit(30L).map(Meal::mapToDTO).toList();
 //        List<Meal> meals = sortByMatchScore(userId, mealsByPref);
-
-        System.out.println("mealOptions = " + mealOptions);
 
         return generatePlan(new MealsRequest(days, mealOptions));
 

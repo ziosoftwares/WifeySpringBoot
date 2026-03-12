@@ -4,7 +4,6 @@ enum class Allergen {
     DAIRY,
     GLUTEN,
     SEAFOOD,
-
     DUMMY_ONLY_FOR_INTERNAL_USAGE
 }
 
@@ -20,7 +19,7 @@ enum class Diet {
     VEG,
     EGG,
     RED_MEAT,
-    FISH, NON_VEG, EGGETARIAN,
+    FISH,
 }
 
 enum class Difficulty {

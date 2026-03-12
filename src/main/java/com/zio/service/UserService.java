@@ -1,5 +1,6 @@
 package com.zio.service;
 
+import com.zio.data.api.Error;
 import com.zio.data.dto.LoginDTO;
 import com.zio.data.dto.PreferencesDTO;
 import com.zio.data.entity.Preferences;
@@ -30,15 +31,15 @@ public class UserService {
     ModelMapper mapper = new ModelMapper();
 
     public String signin(LoginDTO loginDTO) throws ZioException {
-        User user = userRepo.findByEmail(loginDTO.email).orElseThrow(() -> new ZioException("NO_SUCH_USER"));
+        User user = userRepo.findByEmail(loginDTO.email).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_USER", 1)));
         return jwtUtil.buildToken(user.getId());
     }
 
     public String signup(User user) throws ZioException {
         if (userRepo.findByEmail(user.getEmail()).isPresent())
-            throw new ZioException("EMAIL_EXISTS");
+            throw new ZioException(new Error(409, "EMAIL_EXISTS", 1));
         if (userRepo.findByUserName(user.getUserName()).isPresent())
-            throw new ZioException("USERNAME_EXISTS");
+            throw new ZioException(new Error(409, "USERNAME_EXISTS", 2));
         return jwtUtil.buildToken(userRepo.save(user).getId());
     }
 
@@ -47,9 +48,8 @@ public class UserService {
     }
 
     public PreferencesDTO getPreference(Long userId) throws ZioException {
-        Preferences preferences = preferenceRepo.findById(userId).orElseThrow(() -> new ZioException("NO_PREFS"));
+        Preferences preferences = preferenceRepo.findById(userId).orElseThrow(() -> new ZioException(new Error(404, "NO_PREFS", 5)));
 
-        System.out.println("preferences = " + preferences);
         PreferencesDTO dto = new PreferencesDTO();
         dto.setAllergens(preferences.getAllergens().clone());
         dto.setCuisines(preferences.getCuisines().clone());

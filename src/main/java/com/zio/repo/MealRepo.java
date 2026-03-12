@@ -1,26 +1,33 @@
 package com.zio.repo;
 
-import com.zio.data.dto.GeneralDTO;
 import com.zio.data.entity.Meal;
 import com.zio.data.Allergen;
 import com.zio.data.Cuisine;
 import com.zio.data.Diet;
 import com.zio.data.utils.IngredQuantityDTO;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MealRepo extends JpaRepository<Meal, Long> {
 
-//    @Query("select m from Meal m where " +
-//            "m.main.metas.diet in ?1 and " +
-//            "m.main.metas.cuisine in ?2 and " +
-//            "m.main.metas.allergens in ?3")
-//    List<Meal> findMealByPreference(List<Diet> diets, List<Cuisine> cuisines,
-//                                    List<Allergen> allergens);
+    List<Meal> findByNameLike(String name, Pageable pageable);
+
+    @Query(value = """
+                SELECT *
+                FROM meal m
+                JOIN meal_sides ms ON m.id = ms.meal_id
+                WHERE m.main_id = :mainId
+                AND ms.side_id IN (:sideIds)
+                GROUP BY m.id
+                HAVING COUNT(ms.side_id) = :sideCount
+            """, nativeQuery = true)
+    Optional<Meal> findMealByRecipeIds(Long mainId, List<Long> sideIds, int sideCount);
+
 
     @Query(value = """
             SELECT DISTINCT m.*
@@ -33,6 +40,7 @@ public interface MealRepo extends JpaRepository<Meal, Long> {
             AND (ra.allergens IS NULL OR ra.allergens NOT IN (?3))
             LIMIT 100
             """, nativeQuery = true)
+
     /**
      * For filtering, careful with allergens param
      @return at-max 100 ids of filtered meals
@@ -43,8 +51,6 @@ public interface MealRepo extends JpaRepository<Meal, Long> {
                                     @Param("allergens") List<Allergen> allergens);
 
 
-    @Query("select new com.zio.data.dto.GeneralDTO(i.id, i.name) from Meal i where lower(i.name) like lower(?1)")
-    List<GeneralDTO> findMealLike(String s, PageRequest of);
 
     @Query(value = """
             SELECT ingred_id AS ingredId, SUM(total_quantity) AS quantity

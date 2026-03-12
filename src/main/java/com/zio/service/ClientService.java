@@ -1,6 +1,5 @@
 package com.zio.service;
 
-import com.zio.data.dto.GeneralDTO;
 import com.zio.data.dto.RecipeDTO;
 import com.zio.data.entity.Recipe;
 import com.zio.repo.RecipeRepo;
@@ -18,18 +17,16 @@ public class ClientService {
     @Autowired
     RecipeRepo recipeRepo;
 
-    public List<GeneralDTO> getFeatured() {
+    public List<RecipeDTO> getFeatured() {
 
-        Sort sort = Sort.by("id").descending();
+        Sort sort = Sort.by("name").descending();
         Pageable pageable = PageRequest.of(0, 10, sort);
         List<Recipe> recipes = recipeRepo.findAll(pageable).getContent();
-
-        return recipes.stream().map(r -> new GeneralDTO(r.getId(), r.getName())).toList();
+        return recipes.stream().map(RecipeDTO::create).toList();
     }
 
     public RecipeDTO getFeaturedRecipe() {
         return recipeRepo.findAll(PageRequest.of(0, 1))
-                .map(recipe -> new RecipeDTO(recipe.getId(), recipe.getName(), null, null))
-                .stream().findFirst().get();
+                .map(RecipeDTO::create).stream().findFirst().get();
     }
 }

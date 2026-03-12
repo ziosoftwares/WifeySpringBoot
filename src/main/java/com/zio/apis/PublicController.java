@@ -18,13 +18,13 @@ public class PublicController {
     private UserService userService;
 
     @PostMapping("signup")
-    public Response<String> signup(@RequestBody User user) throws ZioException {
-        return new Response<>(userService.signup(user), HttpStatus.CREATED);
+    public String signup(@RequestBody User user) throws ZioException {
+        return userService.signup(user);
     }
 
     @PostMapping("signin")
-    public Response<String> signin(@RequestBody LoginDTO loginDTO) throws ZioException {
-        return Response.ok(userService.signin(loginDTO));
+    public String signin(@RequestBody LoginDTO loginDTO) throws ZioException {
+        return userService.signin(loginDTO);
     }
 
 }

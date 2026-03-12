@@ -7,8 +7,6 @@ enum class FoodType {
     GROCERY, // Everything else
     FRUITS,
 }
-
-
 enum class Units(val textualRep: String) {
     GRAM("g"),
     LITERS("l"),

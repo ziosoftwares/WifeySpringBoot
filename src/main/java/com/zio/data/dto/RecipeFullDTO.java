@@ -16,6 +16,9 @@ public class RecipeFullDTO {
 
     private Long id;
     private String name;
+    private String imgUrl;
+    private String authorName;
+    private Long authorId;
     private RecipeMetasDTO metas;
     private RecipeDetailsFullDTO details;
 
@@ -23,6 +26,9 @@ public class RecipeFullDTO {
         RecipeFullDTO dto = new RecipeFullDTO();
         dto.id = recipe.getId();
         dto.name = recipe.getName();
+        dto.imgUrl = recipe.getImgUrl();
+        dto.authorId = recipe.getAuthor().getId();
+        dto.authorName = recipe.getAuthor().getUserName();
 
         dto.metas = new RecipeMetasDTO(recipe.getId(),
                 recipe.getMetas().getDuration(),

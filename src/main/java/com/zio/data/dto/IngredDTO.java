@@ -15,6 +15,7 @@ public class IngredDTO {
 
     private Long id;
     private String name;
+    private String imgUrl;
     private FoodType type;
     private Nutrients nutrients;
     private Units unit;

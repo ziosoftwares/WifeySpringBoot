@@ -1,5 +1,6 @@
 package com.zio.util;
 
+import com.zio.data.api.Error;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -10,7 +11,7 @@ public class SessionManager {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             return (Long) auth.getPrincipal();
         } catch (Exception e) {
-            throw new ZioException("NO_SESSION");
+            throw new ZioException(new Error(515, "NO_SESSION", 1));
         }
 
     }

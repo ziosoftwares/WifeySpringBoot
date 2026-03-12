@@ -1,6 +1,8 @@
 package com.zio.apis;
 
+import com.zio.data.api.Error;
 import com.zio.data.api.Response;
+import com.zio.data.dto.GeneralDTO;
 import com.zio.util.ZioException;
 import com.zio.data.dto.IngredDTO;
 import com.zio.data.dto.MealDTO;
@@ -8,9 +10,18 @@ import com.zio.data.dto.RecipeDTO;
 import com.zio.service.CreationService;
 import com.zio.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,35 +38,17 @@ public class CreateController {
     PlanService planService;
 
     @PostMapping("meal")
-    public ResponseEntity<String> addMeal(@RequestBody MealDTO meal) throws ZioException {
-        return ResponseEntity.ok("done" + creationService.makeMeal(meal));
-    }
-
-    @PostMapping("meals")
-    public ResponseEntity<String> addMeals(@RequestBody List<MealDTO> meal) {
-        creationService.makeMeals(meal);
-        return ResponseEntity.ok("done all");
+    public ResponseEntity<GeneralDTO> addMeal(@RequestBody ArrayList<Long> ids) throws ZioException {
+        return ResponseEntity.ok(creationService.checkMeal(ids));
     }
 
     @PostMapping("recipe")
-    public Response<Long> addRecipe(@RequestBody RecipeDTO recipe) {
-        return Response.ok(creationService.makeRecipe(recipe));
+    public Long addRecipe(@RequestBody RecipeDTO recipe) throws ZioException {
+        return creationService.makeRecipe(recipe);
     }
 
-    @PostMapping("recipes")
-    public ResponseEntity<String> addRecipes(@RequestBody List<RecipeDTO> recipe) {
-        creationService.makeRecipes(recipe);
-        return ResponseEntity.ok("done");
-    }
-
-    @PostMapping("ingred")
-    public ResponseEntity<String> addIngred(@RequestBody IngredDTO ingred) {
-        return ResponseEntity.ok("done" + creationService.makeIngred(ingred));
-    }
-
-    @PostMapping("ingreds")
-    public ResponseEntity<String> addIngreds(@RequestBody List<IngredDTO> ingreds) {
-        creationService.makeIngreds(ingreds);
-        return ResponseEntity.ok("done all");
+    @PostMapping("recipeImage")
+    public Boolean addRecipePicture(@RequestParam("image") MultipartFile image, @RequestParam("recipeId") Long recipeId) throws ZioException {
+        return creationService.addRecipePicture(image, recipeId);
     }
 }

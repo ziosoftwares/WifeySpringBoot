@@ -31,7 +31,7 @@ public class Meal {
             inverseJoinColumns = @JoinColumn(name = "sideId"))
     private Set<Recipe> sides;
 
-    public GeneralDTO map() {
-        return new GeneralDTO(id, name);
+    public GeneralDTO mapToDTO() {
+        return new GeneralDTO(id, name, main.getImgUrl());
     }
 }

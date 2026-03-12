@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface RecipeRepo extends JpaRepository<Recipe, Long> {
 
-    @Query("select new com.zio.data.dto.GeneralDTO(i.id, i.name) from Recipe i where lower(i.name) like lower(?1)")
-    List<GeneralDTO> findRecipeLike(String name, Pageable pageable);
+    List<Recipe> findByNameLike(String name, Pageable pageable);
 }

@@ -15,10 +15,18 @@ public class GeneralDTO implements Comparable<GeneralDTO> {
 
     /// optionals
     private Units unit;
+    private String imgUrl;
+    private String authorName;
 
     public GeneralDTO(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public GeneralDTO(Long id, String name, String imgUrl) {
+        this.id = id;
+        this.name = name;
+        this.imgUrl = imgUrl;
     }
 
     @Override

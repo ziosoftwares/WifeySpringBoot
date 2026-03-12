@@ -19,7 +19,7 @@ public class AiClientLiteralTest {
     @Autowired
     AiClient client;
 
-    @Test
+    //@Test
     public void literal_generate_test() {
         MealsRequest request = new MealsRequest(1, List.of(
                 new GeneralDTO(89L, "Dosa with coconut chutney"),

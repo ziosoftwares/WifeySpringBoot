@@ -42,7 +42,7 @@ s3:
 logging:
   include-application-name: false
   level:
-    root: DEBUG
+    root: INFO
     org.springframework.security.web.util.matcher: TRACE
     org.springframework.security.web.FilterChainProxy: TRACE
     org.springframework.web.servlet.DispatcherServlet: TRACE

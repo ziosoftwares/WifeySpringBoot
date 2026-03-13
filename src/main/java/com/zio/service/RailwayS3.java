@@ -2,6 +2,7 @@ package com.zio.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -10,8 +11,10 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -38,14 +41,35 @@ public class RailwayS3 implements S3Storage {
         creds = AwsBasicCredentials.create(ACCESS_KEY_ID, SECRET_ACCESS_KEY);
         s3 = S3Client.builder()
                 .credentialsProvider(StaticCredentialsProvider.create(creds))
-                .region(Region.US_EAST_1)
+                .region(Region.of("auto"))
                 .endpointOverride(URI.create(S3URL))
                 .build();
         presigner = S3Presigner.builder()
                 .endpointOverride(URI.create(S3URL))
-                .region(Region.US_EAST_1)
+                .region(Region.of("auto"))
                 .credentialsProvider(StaticCredentialsProvider.create(creds))
                 .build();
+    }
+
+    @Override
+    public String getRecipeImgUploadUrl(String recipeImgName, String mimeType) {
+        String extension = "." + mimeType.substring(mimeType.lastIndexOf('/') + 1);
+        return generateUploadUrl("recipeImages/" + recipeImgName + extension, mimeType);
+    }
+
+    @Override
+    public String getImgDownloadUrl(String imgUrl) {
+        return generateDownloadUrl(imgUrl);
+    }
+
+    @Override
+    public int uploadIngredImage(MultipartFile image) throws IOException {
+        return uploadImage("ingredImages/" + image.getOriginalFilename(), image);
+    }
+
+    @Override
+    public List<String> getDBContents() {
+        return getAllFiles().stream().map(S3Object::key).toList();
     }
 
     private String generateDownloadUrl(String key) {
@@ -56,7 +80,7 @@ public class RailwayS3 implements S3Storage {
                 .build();
 
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                .signatureDuration(Duration.ofMinutes(30))
+                .signatureDuration(Duration.ofMinutes(60))
                 .getObjectRequest(getObjectRequest)
                 .build();
 
@@ -66,29 +90,31 @@ public class RailwayS3 implements S3Storage {
                 .toString();
     }
 
-    private String generateUploadUrl(String key) {
+    private String generateUploadUrl(String key, String mimeType) {
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(BUCKET)
                 .key(key)
-                //.contentType("image/*") // enforce MIME type
+                .contentType(mimeType) // enforce MIME type
                 .build();
 
         PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-                .signatureDuration(Duration.ofMinutes(60)) // expires in 10 min
+                .signatureDuration(Duration.ofMinutes(60))
                 .putObjectRequest(objectRequest)
                 .build();
 
-        return presigner.presignPutObject(presignRequest).url().toString();
+        PresignedPutObjectRequest request = presigner.presignPutObject(presignRequest);
+        return request.url().toString();
     }
 
-    private int uploadImage(String key, Path file) {
+    private int uploadImage(String key, MultipartFile image) throws IOException {
+        RequestBody file = RequestBody.fromInputStream(image.getInputStream(), image.getSize());
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(BUCKET)
                 .key(key)
-                .contentType("image/*")
+                .contentType(image.getContentType())
                 .build();
-        PutObjectResponse response = s3.putObject(request, RequestBody.fromFile(file));
+        PutObjectResponse response = s3.putObject(request, file);
         return response.sdkHttpResponse().statusCode();
     }
 
@@ -100,13 +126,4 @@ public class RailwayS3 implements S3Storage {
         return response.contents();
     }
 
-    @Override
-    public String getRecipeImgUploadUrl(String recipeImgName) {
-        return generateUploadUrl("recipeImages/" + recipeImgName);
-    }
-
-    @Override
-    public String getImgDownloadUrl(String recipeImgUrl) {
-        return generateDownloadUrl(recipeImgUrl);
-    }
 }

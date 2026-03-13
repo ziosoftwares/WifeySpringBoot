@@ -9,8 +9,10 @@ import com.zio.service.CreationService;
 import com.zio.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.internal.util.Mimetype;
 
 import java.util.ArrayList;
 
@@ -37,10 +39,10 @@ public class CreateController {
         return creationService.makeRecipe(recipe);
     }
 
-    @GetMapping("recipeImage")
-    public String getRecipeImgUploadUrl(@RequestParam String imgExtension, @RequestParam Long recipeId) throws ZioException {
-        creationService.updateRecipeImg(imgExtension, recipeId);
-        return s3Storage.getRecipeImgUploadUrl("recipe" + recipeId + imgExtension);
+    @PutMapping("recipeImage")
+    public String getRecipeImgUploadUrl(@RequestParam Long recipeId, @RequestParam String mimeType) throws ZioException {
+        creationService.updateRecipeImg(mimeType, recipeId);
+        return s3Storage.getRecipeImgUploadUrl("recipe" + recipeId, mimeType);
     }
 
     @PostMapping("recipeImage")

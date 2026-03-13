@@ -1,28 +1,18 @@
 package com.zio.apis;
 
-import com.zio.data.api.Error;
-import com.zio.data.api.Response;
+import com.zio.service.RailwayS3;
 import com.zio.data.dto.GeneralDTO;
+import com.zio.service.S3Storage;
 import com.zio.util.ZioException;
-import com.zio.data.dto.IngredDTO;
-import com.zio.data.dto.MealDTO;
 import com.zio.data.dto.RecipeDTO;
 import com.zio.service.CreationService;
 import com.zio.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("create")
@@ -35,7 +25,7 @@ public class CreateController {
     CreationService creationService;
 
     @Autowired
-    PlanService planService;
+    S3Storage s3Storage;
 
     @PostMapping("meal")
     public ResponseEntity<GeneralDTO> addMeal(@RequestBody ArrayList<Long> ids) throws ZioException {
@@ -47,8 +37,15 @@ public class CreateController {
         return creationService.makeRecipe(recipe);
     }
 
+    @GetMapping("recipeImage")
+    public String getRecipeImgUploadUrl(@RequestParam String imgExtension, @RequestParam Long recipeId) throws ZioException {
+        creationService.updateRecipeImg(imgExtension, recipeId);
+        return s3Storage.getRecipeImgUploadUrl("recipe" + recipeId + imgExtension);
+    }
+
     @PostMapping("recipeImage")
     public Boolean addRecipePicture(@RequestParam("image") MultipartFile image, @RequestParam("recipeId") Long recipeId) throws ZioException {
         return creationService.addRecipePicture(image, recipeId);
     }
+
 }

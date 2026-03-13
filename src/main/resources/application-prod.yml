@@ -6,9 +6,17 @@ spring:
     url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
     username: ${MYSQLUSER}
     password: ${MYSQLPASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1800000
+
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: false
 
   web:
     resources:
@@ -16,33 +24,41 @@ spring:
 
   security:
     user:
-      name: "user"
-      password: "{noop}password"
-  http:
-    log-request-details=true:
+      name: ${BASICAUTH_USER}
+      password: ${BASICAUTH_PASSWORD}
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 5MB
+      max-request-size: 5MB
 
-
+server:
+  port: ${PORT:8001}
+  shutdown: graceful
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types:
+      - application/json
+      - text/html
+      - text/plain
+      -
 content:
   recipe: "content/recipe"
 
-server:
-  port: ${PORT:8081}
-
-ai:
-  url: "http://localhost:8000/"
-  method: "/generate_remote"
-
 jwt:
-  secret: "lailaMajnu@30035-extrasforlength"
+  secret: ${JWT_SECRET}
+
+s3:
+  url: ${S3URL}
+  bucket: ${S3BUCKET}
+  keyid: ${S3ID}
+  key: ${S3KEY}
 
 logging:
   include-application-name: false
   level:
-    org.springframework.security.web.util.matcher: TRACE
-    org.springframework.security.web.FilterChainProxy: TRACE
-    org.springframework.web.servlet.DispatcherServlet: TRACE
-    org.springframework.web.servlet.handler.AbstractHandlerMapping: TRACE
+    root: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
+    org.springframework.security.web.FilterChainProxy: ERROR
+

@@ -10,7 +10,6 @@ import com.zio.util.ZioRunTimeException;
 import com.zio.data.dto.IngredDTO;
 import com.zio.data.dto.RecipeDTO;
 import jakarta.transaction.Transactional;
-import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -128,17 +127,10 @@ public class CreationService {
         }
     }
 
+    public void updateRecipeImg(String mimeType, Long recipeId) throws ZioException {
+        String extension = "." + mimeType.substring(mimeType.lastIndexOf('/') + 1);
+        recipeRepo.findById(recipeId).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_RECIPE", 3)))
+                .setImgUrl("recipeImages/recipe" + recipeId + extension);
 
-    /// ////////////// create DB
-    public void makeIngreds(List<IngredDTO> ingreds) {
-        ingreds.forEach(this::makeIngred);
-    }
-
-    public void makeRecipes(List<RecipeDTO> recipes) throws ZioException {
-        for (var recipe : recipes) makeRecipe(recipe);
-    }
-
-    public void makeMeals(List<ArrayList<Long>> mealList) throws ZioException {
-        for (ArrayList<Long> ids : mealList) makeMeal(ids);
     }
 }

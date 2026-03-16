@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,7 +15,7 @@ public class MealDTO {
 
     private Long id;
     private String name;
-    private Long main;
+    private GeneralDTO main;
     private String imgUrl;
-    private Set<Long> sides;
+    private List<GeneralDTO> sides = new ArrayList<>();
 }

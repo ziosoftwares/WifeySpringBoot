@@ -61,7 +61,7 @@ public class QueryController {
     }
 
     @GetMapping("meal/{id}")
-    ResponseEntity<MealFullDTO> getMealById(@PathVariable Long id) throws ZioException {
+    ResponseEntity<MealDTO> getMealById(@PathVariable Long id) throws ZioException {
         return ResponseEntity.ok(queryService.getMealById(id));
     }
 

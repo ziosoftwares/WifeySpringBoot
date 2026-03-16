@@ -53,14 +53,14 @@ public class QueryService {
         return result.stream().map(meal -> new GeneralDTO(meal.getId(), meal.getName(), null, meal.getMain().getImgUrl(), null)).toList();
     }
 
-    public MealFullDTO getMealById(Long id) throws ZioException {
+    public MealDTO getMealById(Long id) throws ZioException {
         Meal meal = mealRepo.findById(id).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_MEAL_ID", 2)));
 
-        MealFullDTO dto = new MealFullDTO();
+        MealDTO dto = new MealDTO();
         dto.setId(meal.getId());
         dto.setName(meal.getName());
-        dto.setMain(RecipeFullDTO.create(meal.getMain()));
-        dto.setSides(meal.getSides().stream().map(RecipeFullDTO::create).collect(Collectors.toSet()));
+        dto.setMain(meal.getMain().makeGeneralDTO());
+        meal.getSides().forEach(side -> dto.getSides().add(side.makeGeneralDTO()));
 
         return dto;
     }

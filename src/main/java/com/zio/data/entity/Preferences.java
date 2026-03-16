@@ -24,15 +24,13 @@ public class Preferences {
 
     @Id
     private Long userId;
-    //    Integer maxTime;
-//    Difficulty difficulty;
 
     @Convert(converter = DietConverter.class)
-    private EnumSet<Diet> diets;
+    private EnumSet<Diet> diets = EnumSet.noneOf(Diet.class);
     @Convert(converter = CuisineConverter.class)
-    private EnumSet<Cuisine> cuisines;
+    private EnumSet<Cuisine> cuisines = EnumSet.noneOf(Cuisine.class);
     @Convert(converter = AllergenConverter.class)
-    private EnumSet<Allergen> allergens;
+    private EnumSet<Allergen> allergens = EnumSet.noneOf(Allergen.class);
 
 
 }

@@ -1,6 +1,6 @@
 package com.zio.wifey;
 
-import com.zio.client.AiClient;
+import com.zio.plan.client.AiClient;
 import com.zio.data.dto.GeneralDTO;
 import com.zio.data.dto.MealsRequest;
 import org.junit.jupiter.api.Test;

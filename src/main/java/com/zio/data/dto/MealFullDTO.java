@@ -1,8 +1,6 @@
 package com.zio.data.dto;
 
-import com.zio.data.entity.Recipe;
-import com.zio.data.entity.RecipeDetails;
-import jakarta.persistence.*;
+import com.zio.recipe.data.RecipeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +14,6 @@ public class MealFullDTO {
 
     private Long id;
     private String name;
-    private RecipeFullDTO main;
-    private Set<RecipeFullDTO> sides;
+    private RecipeDTO main;
+    private Set<RecipeDTO> sides;
 }

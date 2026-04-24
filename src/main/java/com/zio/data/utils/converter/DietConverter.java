@@ -1,6 +1,6 @@
 package com.zio.data.utils.converter;
 
-import com.zio.data.Diet;
+import com.zio.recipe.data.entity.Diet;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)

@@ -1,6 +1,6 @@
 package com.zio.data.utils.converter;
 
-import com.zio.data.Allergen;
+import com.zio.recipe.data.entity.Allergen;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)

@@ -1,6 +1,6 @@
 package com.zio.data.utils.converter;
 
-import com.zio.data.Cuisine;
+import com.zio.recipe.data.entity.Cuisine;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)

@@ -1,6 +1,6 @@
 package com.zio.data.dto;
 
-import com.zio.wifey.data.recipe.Units;
+import com.zio.ingred.data.Units;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +27,13 @@ public class GeneralDTO implements Comparable<GeneralDTO> {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
+    }
+
+    public GeneralDTO(Long id, String name, String imgUrl, String authorName) {
+        this.id = id;
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.authorName = authorName;
     }
 
     @Override

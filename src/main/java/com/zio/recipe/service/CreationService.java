@@ -10,6 +10,7 @@ import com.zio.recipe.data.IngredQuantityDTO;
 import com.zio.recipe.data.entity.*;
 import com.zio.recipe.data.util.ObjectMapper;
 import com.zio.recipe.repo.*;
+import com.zio.user.repo.AuthorRepo;
 import com.zio.user.repo.UserRepo;
 import com.zio.util.SessionManager;
 import com.zio.util.ZioException;
@@ -38,6 +39,8 @@ public class CreationService {
 
     @Autowired
     IngredRepo ingredRepo;
+    @Autowired
+    AuthorRepo authorRepo;
     @Autowired
     MealRepo mealRepo;
     @Autowired
@@ -74,6 +77,7 @@ public class CreationService {
         metasRepo.save(metas);
         detailsRepo.save(details);
         receptionRepo.save(new Reception(recipeDTO.getId()));
+        authorRepo.increaseRecipe(SessionManager.getUserId());
 
         return recipeDTO.getId();
     }
@@ -102,7 +106,6 @@ public class CreationService {
 
         return metas;
     }
-
 
     private Diet findDiet(List<Category> categories) {
         if (categories.stream().anyMatch(cat -> cat.equals(Category.FISH)))

@@ -54,12 +54,11 @@ public class UserService {
     }
 
     public PreferencesDTO getPreference(Long userId) throws ZioException {
-        Preferences preferences = preferenceRepo.findById(userId).orElseThrow(() -> new ZioException(new Error(404, "NO_PREFS", 5)));
-
+        Preferences preferences = preferenceRepo.findById(userId).orElse(new Preferences());
         PreferencesDTO dto = new PreferencesDTO();
-        dto.setAllergens(preferences.getAllergens().clone());
-        dto.setCuisines(preferences.getCuisines().clone());
-        dto.setDiets(preferences.getDiets().clone());
+        dto.setAllergens(preferences.getAllergens());
+        dto.setCuisines(preferences.getCuisines());
+        dto.setDiets(preferences.getDiets());
 
         return dto;
     }

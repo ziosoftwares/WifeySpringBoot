@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    UserService userService;
-
+    private UserService userService;
     private Long userId = -1L;
 
     @GetMapping("verify")

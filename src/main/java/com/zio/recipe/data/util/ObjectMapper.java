@@ -1,6 +1,6 @@
 package com.zio.recipe.data.util;
 
-import com.zio.data.dto.GeneralDTO;
+import com.zio.common.data.dto.GeneralDTO;
 import com.zio.ingred.data.IngredDTO;
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.recipe.data.*;
@@ -12,10 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ObjectMapper {
-
-    public static GeneralDTO toGenDTO(Meal meal) {
-        return new GeneralDTO(meal.getId(), meal.getName(), meal.getMain().getImgUrl());
-    }
 
     public static GeneralDTO toGenDTO(Recipe recipe, String authorName) {
         return new GeneralDTO(recipe.getId(), recipe.getName(), recipe.getImgUrl(), authorName);

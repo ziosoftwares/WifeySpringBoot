@@ -2,9 +2,8 @@ package com.zio.recipe.data.entity;
 
 
 import java.util.EnumSet;
-import java.util.Set;
 
-import com.zio.data.utils.converter.AllergenConverter;
+import com.zio.common.data.utils.converter.AllergenConverter;
 import com.zio.ingred.data.entity.Nutrition;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +22,10 @@ public class RecipeMetas {
     private Integer duration;
     @Enumerated
     private Difficulty difficulty;
+    @Enumerated
+    private MealType mealType;
+    @Enumerated
+    private Role role;
     @Enumerated
     private Cuisine cuisine;
     @Enumerated

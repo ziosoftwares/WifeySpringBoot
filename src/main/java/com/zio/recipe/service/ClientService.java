@@ -1,20 +1,19 @@
 package com.zio.recipe.service;
 
-import com.zio.data.api.Error;
+import com.zio.common.data.api.Error;
 import com.zio.recipe.data.ReceptionDTO;
 import com.zio.recipe.data.RecipeDTO;
 import com.zio.recipe.data.entity.Diet;
 import com.zio.recipe.data.entity.Difficulty;
-import com.zio.recipe.data.entity.Recipe;
 import com.zio.recipe.data.entity.RecipeMetas;
 import com.zio.recipe.data.util.ObjectMapper;
 import com.zio.recipe.repo.ReceptionRepo;
 import com.zio.recipe.repo.RecipeMetasRepo;
 import com.zio.recipe.repo.RecipeRepo;
 import com.zio.user.repo.AuthorRepo;
-import com.zio.util.SessionManager;
-import com.zio.util.ZioException;
-import com.zio.util.ZioRunTimeException;
+import com.zio.common.util.SessionManager;
+import com.zio.common.util.ZioException;
+import com.zio.common.util.ZioRunTimeException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;

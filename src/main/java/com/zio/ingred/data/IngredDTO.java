@@ -1,7 +1,9 @@
 package com.zio.ingred.data;
 
 
+import com.zio.ingred.data.entity.Category;
 import com.zio.ingred.data.entity.Nutrition;
+import com.zio.ingred.data.entity.Units;
 import com.zio.recipe.data.entity.Allergen;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,9 +1,8 @@
 package com.zio.wifey;
 
 import com.zio.plan.client.AiClient;
-import com.zio.data.dto.GeneralDTO;
-import com.zio.data.dto.MealsRequest;
-import org.junit.jupiter.api.Test;
+import com.zio.common.data.dto.GeneralDTO;
+import com.zio.common.data.dto.MealsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;

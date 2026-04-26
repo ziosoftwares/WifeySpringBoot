@@ -13,14 +13,28 @@ enum class Diet {
     VEGAN,
     VEGETARIAN,
     EGGETARIAN,
-    NONVEGETARIAN,
-    PESCATARIAN
+    PESCATARIAN,
+    NONVEGETARIAN
 }
 
 enum class Difficulty {
     EASY,
     MEDIUM,
     HARD
+}
+
+enum class MealType {
+    ANY,
+    BREAKFAST,
+    LUNCH,
+    DINNER
+}
+
+enum class Role {
+    ANY,
+    MAIN,
+    SIDE
+
 }
 
 enum class Allergen {

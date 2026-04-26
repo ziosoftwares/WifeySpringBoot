@@ -2,7 +2,7 @@ package com.zio.wifey;
 
 import com.zio.recipe.data.entity.Allergen;
 import com.zio.recipe.data.entity.Cuisine;
-import com.zio.recipe.repo.MealRepo;
+import com.zio.plan.repo.MealRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
 package com.zio.user.controller;
 
-import com.zio.data.api.Response;
+import com.zio.common.data.api.Response;
 import com.zio.user.data.PreferencesDTO;
 import com.zio.user.data.entity.Preferences;
 import com.zio.user.service.UserService;
-import com.zio.util.SessionManager;
-import com.zio.util.ZioException;
+import com.zio.common.util.SessionManager;
+import com.zio.common.util.ZioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

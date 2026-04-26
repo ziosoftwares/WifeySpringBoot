@@ -1,17 +1,12 @@
 package com.zio.plan.controller;
 
-import com.zio.data.dto.DayPlanDTO;
-import com.zio.util.ZioException;
+import com.zio.plan.data.entity.Plan;
+import com.zio.common.util.ZioException;
 import com.zio.plan.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("plan")
@@ -25,13 +20,13 @@ public class PlanController {
     private PlanService planService;
 
     @GetMapping("days/{days}")
-    public ResponseEntity<List<DayPlanDTO>> makePlanForDays(Integer days) throws ZioException {
-        return ResponseEntity.ok(planService.makePlanForDays(days).block());
+    public ResponseEntity<Plan> makePlanForDays(@PathVariable Integer days) throws ZioException {
+        if (days > 7) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(planService.makePlanForDays(days));
     }
 
-    @GetMapping("day")
-    public ResponseEntity<DayPlanDTO> makeDayPlan() throws ZioException {
-        return ResponseEntity.ok(planService.makePlanForDays(1).block().getFirst());
+    @PostMapping("publish")
+    public ResponseEntity<Long> publishPlan(@RequestBody Plan plan) throws ZioException {
+        return new ResponseEntity<>(planService.savePlan(plan), HttpStatus.CREATED);
     }
-
 }

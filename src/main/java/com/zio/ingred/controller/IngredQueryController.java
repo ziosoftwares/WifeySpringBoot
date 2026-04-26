@@ -1,11 +1,11 @@
 package com.zio.ingred.controller;
 
-import com.zio.data.api.Response;
-import com.zio.data.dto.*;
+import com.zio.common.data.api.Response;
+import com.zio.common.data.dto.GeneralDTO;
 import com.zio.ingred.data.IngredDTO;
 import com.zio.ingred.service.IngredQueryService;
 import com.zio.recipe.data.IngredQuantityDTO;
-import com.zio.util.ZioException;
+import com.zio.common.util.ZioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,20 +1,20 @@
 package com.zio.recipe.service;
 
-import com.zio.data.api.Error;
-import com.zio.data.dto.GeneralDTO;
-import com.zio.ingred.data.Category;
+import com.zio.common.data.api.Error;
+import com.zio.ingred.data.entity.Category;
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.ingred.data.entity.Nutrition;
 import com.zio.ingred.repo.IngredRepo;
+import com.zio.plan.repo.MealRepo;
 import com.zio.recipe.data.IngredQuantityDTO;
 import com.zio.recipe.data.entity.*;
 import com.zio.recipe.data.util.ObjectMapper;
 import com.zio.recipe.repo.*;
 import com.zio.user.repo.AuthorRepo;
 import com.zio.user.repo.UserRepo;
-import com.zio.util.SessionManager;
-import com.zio.util.ZioException;
-import com.zio.util.ZioRunTimeException;
+import com.zio.common.util.SessionManager;
+import com.zio.common.util.ZioException;
+import com.zio.common.util.ZioRunTimeException;
 import com.zio.recipe.data.RecipeDTO;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -124,38 +124,6 @@ public class CreationService {
         return ingredients.stream().map(iq ->
                         new IngredQuantity(ingredRepo.findById(iq.getIngred().getId()).orElseThrow(() -> new ZioRunTimeException(new Error(404, "NO_SUCH_INGRED", 4))).getId(), iq.getQuantity(), details))
                 .toList();
-    }
-
-    public GeneralDTO checkMeal(ArrayList<Long> ids) throws ZioException {
-        Optional<Meal> meal = mealRepo.findMealByRecipeIds(
-                ids.getFirst(),
-                ids.subList(1, ids.size()),
-                ids.size() - 1
-        );
-        Meal result = meal.isPresent() ? meal.get() : makeMeal(ids);
-        return ObjectMapper.toGenDTO(result);
-    }
-
-    public Meal makeMeal(ArrayList<Long> ids) throws ZioException {
-        Meal meal = new Meal();
-        meal.setMain(recipeRepo.findById(ids.getFirst()).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_RECIPE", 3))));
-        ids.removeFirst();
-        meal.setSides(new HashSet<>());
-        for (Long s : ids) {
-            meal.getSides().add(recipeRepo.findById(s).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_RECIPE", 3))));
-        }
-        meal.setName(generateName(meal));
-        meal.setId(null);
-        return mealRepo.save(meal);
-    }
-
-    private String generateName(Meal meal) {
-        StringBuilder nameBuilder = new StringBuilder(meal.getMain().getName());
-        if (!meal.getSides().isEmpty())
-            nameBuilder.append(" | ");
-        meal.getSides().forEach(s -> nameBuilder.append(s.getName()).append(", "));
-        nameBuilder.delete(nameBuilder.length() - 2, nameBuilder.length() - 1);
-        return nameBuilder.toString();
     }
 
     /// ///////////// CDN

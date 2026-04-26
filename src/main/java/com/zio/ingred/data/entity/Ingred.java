@@ -1,15 +1,11 @@
 package com.zio.ingred.data.entity;
 
 
-import com.zio.ingred.data.Category;
-import com.zio.ingred.data.Units;
 import com.zio.recipe.data.entity.Allergen;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 @Data
 @AllArgsConstructor

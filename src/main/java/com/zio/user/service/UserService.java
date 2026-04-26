@@ -1,6 +1,6 @@
 package com.zio.user.service;
 
-import com.zio.data.api.Error;
+import com.zio.common.data.api.Error;
 import com.zio.user.data.LoginDTO;
 import com.zio.user.data.PreferencesDTO;
 import com.zio.user.data.entity.Author;
@@ -9,8 +9,8 @@ import com.zio.user.data.entity.User;
 import com.zio.user.repo.AuthorRepo;
 import com.zio.user.repo.PreferenceRepo;
 import com.zio.user.repo.UserRepo;
-import com.zio.security.JwtUtil;
-import com.zio.util.ZioException;
+import com.zio.common.security.JwtUtil;
+import com.zio.common.util.ZioException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,17 +1,15 @@
 package com.zio.ingred.service;
 
-import com.zio.data.api.Error;
-import com.zio.data.dto.*;
+import com.zio.common.data.api.Error;
+import com.zio.common.data.dto.GeneralDTO;
 
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.ingred.data.IngredDTO;
-import com.zio.ingred.data.entity.Nutrition;
 import com.zio.ingred.data.util.ObjectMapper;
 import com.zio.ingred.repo.IngredRepo;
 import com.zio.recipe.data.IngredQuantityDTO;
-import com.zio.recipe.repo.MealRepo;
-import com.zio.util.ZioException;
-import com.zio.util.ZioRunTimeException;
+import com.zio.plan.repo.MealRepo;
+import com.zio.common.util.ZioException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

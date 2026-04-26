@@ -1,8 +1,8 @@
 package com.zio.wifey;
 
-import com.zio.data.dto.DayPlanDTO;
+import com.zio.common.data.dto.DayPlanDTO;
 import com.zio.plan.service.PlanService;
-import com.zio.util.ZioException;
+import com.zio.common.util.ZioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;

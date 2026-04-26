@@ -1,11 +1,10 @@
 package com.zio.user.controller;
 
-import com.zio.ingred.data.IngredDTO;
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.recipe.data.RecipeDTO;
 import com.zio.recipe.service.CreationService;
-import com.zio.service.S3Storage;
-import com.zio.util.ZioException;
+import com.zio.common.service.S3Storage;
+import com.zio.common.util.ZioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +29,11 @@ public class AdminController {
 
     /// ///////////// one shot creators to init db
 
-    @PostMapping("meals")
+    /*@PostMapping("meals")
     public ResponseEntity<Void> addMeals(@RequestBody List<ArrayList<Long>> mealList) throws ZioException {
         for (ArrayList<Long> ids : mealList) creationService.makeMeal(ids);
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+    }*/
 
     @PostMapping("recipes")
     public ResponseEntity<Void> addRecipes(@RequestBody List<RecipeDTO> recipes) throws ZioException {

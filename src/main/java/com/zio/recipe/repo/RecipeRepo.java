@@ -17,4 +17,6 @@ public interface RecipeRepo extends JpaRepository<Recipe, Long>{
     @Query("select r.id from Reception r where r.recipeId in ?1")
     List<Long> findBestReceived(List<Long> ids, Pageable pageable);
 
+    @Query("select r.name from Recipe r where r.id = ?1")
+    String findNameById(Long id);
 }

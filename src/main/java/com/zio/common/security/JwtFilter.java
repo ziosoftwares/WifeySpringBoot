@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
             filterChain.doFilter(request, response);
-        } catch (JwtException e) {
+        } catch (JwtException | StringIndexOutOfBoundsException e) {
             response.setStatus(400);
             response.setContentType("application/json");
             response.getWriter().write("{\"body\": false,\"statusCode\": 400,\"error\": {\"message\": \"JWT invalid or expired\",\"code\": 2}}");

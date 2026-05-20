@@ -1,17 +1,17 @@
 package com.zio.ingred.service;
 
 import com.zio.common.data.api.Error;
-import com.zio.common.data.dto.GeneralDTO;
+import com.zio.common.data.GeneralDTO;
 
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.ingred.data.IngredDTO;
 import com.zio.ingred.data.util.ObjectMapper;
 import com.zio.ingred.repo.IngredRepo;
 import com.zio.recipe.data.IngredQuantityDTO;
-import com.zio.plan.repo.MealRepo;
 import com.zio.common.util.ZioException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,6 @@ public class IngredQueryService {
     @Autowired
     IngredRepo ingredRepo;
 
-    @Autowired
-    MealRepo mealRepo;
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -41,17 +39,13 @@ public class IngredQueryService {
         return new ArrayList<>();
     }
 
+    @Cacheable(value = "ingred", key = "#id")
     public IngredDTO getIngred(Long id) throws ZioException {
-        Ingred ingred = ingredRepo.findById(id).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_INGRED", 4)));
-        IngredDTO dto = mapper.map(ingred, IngredDTO.class);
-
-        return dto;
+        Ingred ingred = ingredRepo.findById(id).orElseThrow(() -> new ZioException(new Error(404, 4, "NO_SUCH_INGRED")));
+        return ObjectMapper.toDTO(ingred);
     }
 
     public List<IngredDTO> getIngreds(List<Long> ids) {
-        return ingredRepo.findAllById(ids).stream().map(i -> {
-            IngredDTO dto = mapper.map(i, IngredDTO.class);
-            return dto;
-        }).toList();
+        return ingredRepo.findAllById(ids).stream().map(ObjectMapper::toDTO).toList();
     }
 }

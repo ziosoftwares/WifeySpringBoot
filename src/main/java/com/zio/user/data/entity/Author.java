@@ -16,7 +16,8 @@ public class Author {
     private String userName = "NA";
     private Integer recipes = 0;
 
-    public Author(Long userId) {
+    public Author(Long userId, String userName) {
         this.userId = userId;
+        this.userName = userName;
     }
 }

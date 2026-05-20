@@ -1,33 +1,32 @@
 package com.zio.plan.service;
 
+import com.zio.common.data.RecipeInfo;
+import com.zio.common.data.api.Error;
 import com.zio.plan.client.AiClient;
+import com.zio.plan.data.*;
+import com.zio.plan.data.entity.DayPlan;
 import com.zio.plan.data.entity.Plan;
 import com.zio.plan.repo.PlanRepo;
-import com.zio.recipe.repo.RecipeRepo;
 import com.zio.recipe.service.RecipeQueryService;
 import com.zio.common.util.SessionManager;
 import com.zio.common.util.ZioException;
-import com.zio.plan.data.entity.Meal;
-import com.zio.plan.repo.MealRepo;
 import com.zio.user.repo.PreferenceRepo;
+import com.zio.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PlanService {
 
     @Autowired
-    private MealRepo mealRepo;
-    @Autowired
     private PlanRepo planRepo;
     @Autowired
-    private RecipeRepo recipeRepo;
-
+    private UserService userService;
     @Autowired
     private RecipeQueryService recipeService;
-
     @Autowired
     private PreferenceRepo preferenceRepo;
     @Autowired
@@ -35,42 +34,87 @@ public class PlanService {
 
     final private String tag = getClass().getName();
 
-    public Long savePlan(Plan plan) throws ZioException {
-        plan.getDayPlans().forEach(dayPlan -> {
-            dayPlan.setBreakfast(checkMeal(dayPlan.getBreakfast()));
-            dayPlan.setLunch(checkMeal(dayPlan.getLunch()));
-            dayPlan.setDinner(checkMeal(dayPlan.getDinner()));
-            dayPlan.setPlan(plan);
-        });
+    public void savePlan(List<DayPlanDTO> dayPlanDTO, String title) throws ZioException {
+        Plan plan = new Plan();
+        plan.setTitle(title);
+        plan.setDayPlans(dayPlanDTO.stream().map(it -> new DayPlan(plan, it.getDay(), it.getBreakfast(), it.getLunch(), it.getDinner())).toList());
         plan.setAuthorId(SessionManager.getUserId());
-        return planRepo.save(plan).getId();
+        plan.setAuthorName(userService.getUserById(plan.getAuthorId()).getUserName());
+
+        plan.getDayPlans().forEach(it -> it.setPlanId(plan));
+        plan.setImgUrls(getImageUrls(
+                plan.getDayPlans().getFirst().getBreakfast().getFirst(),
+                plan.getDayPlans().getFirst().getLunch().getFirst(),
+                plan.getDayPlans().getFirst().getDinner().getFirst()));
+        planRepo.save(plan);
     }
 
-    private Meal checkMeal(Meal meal) {
-        return mealRepo.findByMainAndSide1AndSide2(meal.getMain(), meal.getSide1(), meal.getSide2())
-                .orElseGet(() -> {
-                    meal.setName(buildMealName(meal));
-                    return mealRepo.save(meal);
-                });
+    private List<String> getImageUrls(Long id1, Long id2, Long id3) throws ZioException {
+        List<String> list = new ArrayList<>();
+        list.add(recipeService.getRecipeImgUrl(id1));
+        list.add(recipeService.getRecipeImgUrl(id2));
+        list.add(recipeService.getRecipeImgUrl(id3));
+        return list;
     }
 
-    public String buildMealName(Meal meal) {
-        StringBuilder sb = new StringBuilder();
-        append(sb, recipeRepo.findNameById(meal.getMain()));
-        append(sb, recipeRepo.findNameById(meal.getSide1()));
-        append(sb, recipeRepo.findNameById(meal.getSide2()));
-        return sb.toString();
+    public List<DayPlanFull> makePlanForDays(Integer days) throws ZioException {
+
+        List<RecipeInfo> recipes = recipeService.getRecipesByPreference();
+        var dayPlanRaw = aiClient.generate(new PlanRequest(days, recipes)).block().getDayPlans();
+
+        return getheridiot(dayPlanRaw);
     }
 
-    private void append(StringBuilder sb, String name) {
-        if (name == null || name.isBlank()) return;
-        if (!sb.isEmpty()) sb.append(" | ");
-        sb.append(name);
+    public List<PlanDTO> getAllPlans() {
+        return planRepo.findAll().stream().map(PlanDTO::new).peek(it -> it.setDayPlans(null)).toList();
     }
 
+    public PlanFull getPlan(Long id) throws ZioException {
+        var plan = planRepo.findById(id).orElseThrow(() -> new ZioException(new Error(404, 6, "NO_SUCH_PLAN")));
+        var plan1 = new PlanFull(plan);
+        plan1.setDayPlans(from(plan.getDayPlans()));
+        return plan1;
+    }
 
-    public Plan makePlanForDays(Integer days) {
-        List<>
-        return null;
+    private List<DayPlanFull> from(List<DayPlan> dayPlanDTOS) throws ZioException {
+        List<DayPlanFull> result = new ArrayList<>();
+        for (DayPlan dayPlan : dayPlanDTOS) {
+            var day = new DayPlanFull();
+            day.setDay(dayPlan.getDay());
+            for (Long l : dayPlan.getBreakfast()) {
+                day.getBreakfast().add(recipeService.getRecipeDTO(l));
+            }
+            for (Long l : dayPlan.getLunch()) {
+                day.getLunch().add(recipeService.getRecipeDTO(l));
+
+            }
+            for (Long l : dayPlan.getDinner()) {
+                day.getDinner().add(recipeService.getRecipeDTO(l));
+
+            }
+            result.add(day);
+        }
+        return result;
+    }
+
+    private List<DayPlanFull> getheridiot(List<DayPlanDTO> dayPlanDTOS) throws ZioException {
+        List<DayPlanFull> result = new ArrayList<>();
+        for (DayPlanDTO dayPlan : dayPlanDTOS) {
+            var day = new DayPlanFull();
+            day.setDay(dayPlan.getDay());
+            for (Long l : dayPlan.getBreakfast()) {
+                day.getBreakfast().add(recipeService.getRecipeDTO(l));
+            }
+            for (Long l : dayPlan.getLunch()) {
+                day.getLunch().add(recipeService.getRecipeDTO(l));
+
+            }
+            for (Long l : dayPlan.getDinner()) {
+                day.getDinner().add(recipeService.getRecipeDTO(l));
+
+            }
+            result.add(day);
+        }
+        return result;
     }
 }

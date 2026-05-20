@@ -3,6 +3,7 @@ package com.zio.user.service;
 import com.zio.common.data.api.Error;
 import com.zio.user.data.LoginDTO;
 import com.zio.user.data.PreferencesDTO;
+import com.zio.user.data.UserInfo;
 import com.zio.user.data.entity.Author;
 import com.zio.user.data.entity.Preferences;
 import com.zio.user.data.entity.User;
@@ -14,6 +15,7 @@ import com.zio.common.util.ZioException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,24 +31,27 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-    ModelMapper mapper = new ModelMapper();
-
-    public String signin(LoginDTO loginDTO) throws ZioException {
-        User user = userRepo.findByEmail(loginDTO.email).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_USER", 1)));
-        return jwtUtil.buildToken(user.getId());
+    public UserInfo signin(LoginDTO loginDTO) throws ZioException {
+        User user = userRepo.findByEmail(loginDTO.email).orElseThrow(() -> new ZioException(new Error(403, 1, "WRONG_CREDS")));
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()))
+            throw new ZioException(new Error(403, 1, "WRONG_CREDS"));
+        return new UserInfo(user.getId(), user.getUserName(), jwtUtil.buildToken(user.getId()));
     }
 
-    public String signup(User user) throws ZioException {
-        if (userRepo.findByEmail(user.getEmail()).isPresent())
-            throw new ZioException(new Error(409, "EMAIL_EXISTS", 1));
-        if (userRepo.findByUserName(user.getUserName()).isPresent())
-            throw new ZioException(new Error(409, "USERNAME_EXISTS", 2));
-        Long id = userRepo.save(user).getId();
-        authorRepo.save(new Author(id));
-        preferenceRepo.save(new Preferences(id));
-        return jwtUtil.buildToken(id);
+    public UserInfo signup(LoginDTO loginDTO) throws ZioException {
+        if (userRepo.findByEmail(loginDTO.getEmail()).isPresent())
+            throw new ZioException(new Error(409, 1, "EMAIL_EXISTS"));
+        if (userRepo.findByUserName(loginDTO.getUserName()).isPresent())
+            throw new ZioException(new Error(409, 2, "USERNAME_EXISTS"));
+
+        loginDTO.setPassword(passwordEncoder.encode(loginDTO.password));
+        User savedUser = userRepo.save(new User(loginDTO));
+        authorRepo.save(new Author(savedUser.getId(), savedUser.getUserName()));
+        preferenceRepo.save(new Preferences(savedUser.getId()));
+        return new UserInfo(savedUser.getId(), savedUser.getUserName(), jwtUtil.buildToken(savedUser.getId()));
     }
 
     public void updatePrefs(Preferences preferences) {
@@ -58,12 +63,16 @@ public class UserService {
         PreferencesDTO dto = new PreferencesDTO();
         dto.setAllergens(preferences.getAllergens());
         dto.setCuisines(preferences.getCuisines());
-        dto.setDiets(preferences.getDiets());
+        dto.setDiet(preferences.getDiet());
 
         return dto;
     }
 
     public Boolean verify(Long userId) {
         return userRepo.existsById(userId);
+    }
+
+    public User getUserById(Long id) throws ZioException {
+        return userRepo.findById(id).orElseThrow(() -> new ZioException(new Error(404, 1, "NO_SUCH_USER")));
     }
 }

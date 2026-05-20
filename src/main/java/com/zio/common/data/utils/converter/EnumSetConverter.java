@@ -3,6 +3,7 @@ package com.zio.common.data.utils.converter;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.EnumSet;
+import java.util.List;
 
 
 public class EnumSetConverter<E extends Enum<E>> implements AttributeConverter<EnumSet<E>, Long> {
@@ -37,5 +38,11 @@ public class EnumSetConverter<E extends Enum<E>> implements AttributeConverter<E
             }
         }
         return enumSet;
+    }
+
+    public List<Integer> toOrdinalsList(EnumSet<E> cuisines) {
+        return cuisines.stream()
+                .map(E::ordinal)
+                .toList();
     }
 }

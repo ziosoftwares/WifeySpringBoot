@@ -1,7 +1,7 @@
 package com.zio.ingred.controller;
 
 import com.zio.common.data.api.Response;
-import com.zio.common.data.dto.GeneralDTO;
+import com.zio.common.data.GeneralDTO;
 import com.zio.ingred.data.IngredDTO;
 import com.zio.ingred.service.IngredQueryService;
 import com.zio.recipe.data.IngredQuantityDTO;
@@ -29,8 +29,8 @@ public class IngredQueryController {
     }
 
     @GetMapping("ingred/{id}")
-    Response<IngredDTO> getIngred(@PathVariable Long id) throws ZioException {
-        return Response.ok(queryService.getIngred(id));
+    ResponseEntity<IngredDTO> getIngred(@PathVariable Long id) throws ZioException {
+        return ResponseEntity.ok(queryService.getIngred(id));
     }
 
     @GetMapping("ingreds")

@@ -11,7 +11,7 @@ public class SessionManager {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             return (Long) auth.getPrincipal();
         } catch (Exception e) {
-            throw new ZioException(new Error(515, "NO_SESSION", 1));
+            throw new ZioException(new Error(515, 1, "NO_SESSION"));
         }
 
     }

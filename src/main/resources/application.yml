@@ -15,10 +15,17 @@ spring:
       max-request-size: 10MB
   jackson:
     default-property-inclusion: non_null
+  data:
+    redis:
+      host: localhost
+      port: 8005
+  cache:
+    type: redis
+    redis.time-to-live: 3600000
 
 ai:
-  url: ""
-  method: ""
+  url: "http://127.0.0.1:8000/"
+  method: "generate"
 
 content:
   recipe: "content/recipe"

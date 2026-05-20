@@ -1,6 +1,10 @@
 package com.zio.plan.client;
 
-import com.zio.common.data.dto.MealsRequest;
+import com.zio.common.data.RecipeInfo;
+import com.zio.plan.data.DayPlanDTO;
+import com.zio.plan.data.PlanDTO;
+import com.zio.plan.data.PlanRequest;
+import com.zio.plan.data.entity.Plan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,8 +25,8 @@ public class AiClient {
         this.method = method;
     }
 
-    public Mono<List<Long>> generate(MealsRequest request) {
+    public Mono<PlanDTO> generate(PlanRequest request) {
         return webClient.post().uri(method).bodyValue(request).retrieve()
-                .bodyToFlux(Long.class).collectList();
+                .bodyToMono(PlanDTO.class);
     }
 }

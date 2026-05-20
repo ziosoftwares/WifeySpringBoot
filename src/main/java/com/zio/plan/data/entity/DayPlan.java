@@ -5,29 +5,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@IdClass(DayPlanId.class)
 public class DayPlan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
-    @JoinColumn(name = "plan_id")
-    private Plan plan;
+    @JoinColumn(name = "planId")
+    private Plan planId;
 
-    @ManyToOne
-    @JoinColumn(name = "breakfast_id")
-    private Meal breakfast;
+    @Id
+    private Integer day;
 
-    @ManyToOne
-    @JoinColumn(name = "lunch_id")
-    private Meal lunch;
+    @ElementCollection
+    private List<Long> breakfast; //recipe ids
 
-    @ManyToOne
-    @JoinColumn(name = "dinner_id")
-    private Meal dinner;
+    @ElementCollection
+    private List<Long> lunch;
+
+    @ElementCollection
+    private List<Long> dinner;
+
 }

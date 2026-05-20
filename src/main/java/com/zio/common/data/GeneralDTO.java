@@ -1,4 +1,4 @@
-package com.zio.common.data.dto;
+package com.zio.common.data;
 
 import com.zio.ingred.data.entity.Units;
 import lombok.AllArgsConstructor;

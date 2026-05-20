@@ -2,10 +2,9 @@ package com.zio.recipe.service;
 
 import com.zio.common.data.api.Error;
 import com.zio.recipe.data.ReceptionDTO;
+import com.zio.recipe.data.RecipeCard;
 import com.zio.recipe.data.RecipeDTO;
-import com.zio.recipe.data.entity.Diet;
-import com.zio.recipe.data.entity.Difficulty;
-import com.zio.recipe.data.entity.RecipeMetas;
+import com.zio.recipe.data.entity.*;
 import com.zio.recipe.data.util.ObjectMapper;
 import com.zio.recipe.repo.ReceptionRepo;
 import com.zio.recipe.repo.RecipeMetasRepo;
@@ -40,15 +39,15 @@ public class ClientService {
     @Autowired
     AuthorRepo authorRepo;
 
-    public List<RecipeDTO> getFeatured(Map<String, Object> filter) {
+    public List<RecipeCard> getFeatured(Map<String, Object> filter) {
         List<Long> filteredIds = metasRepo.findAll(buildSpec(filter)).stream().map(RecipeMetas::getRecipeId).toList();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("likesCount").descending());
         List<Long> ids = recipeRepo.findBestReceived(filteredIds, pageable);
         return recipeRepo.findAllById(ids).stream().map(recipe -> {
             try {
-                return ObjectMapper.toRecipeDTO(recipe, authorRepo.findById(recipe.getAuthorId()), Optional.of(new ReceptionDTO(receptionRepo.findLikesCountByRecipeId(recipe.getId()), receptionRepo.isLikedBy(recipe.getId(), SessionManager.getUserId()))));
+                return ObjectMapper.toRecipeCard(recipe, authorRepo.findById(recipe.getAuthorId()), metasRepo.findById(recipe.getId()), Optional.of(new ReceptionDTO(receptionRepo.findLikesCountByRecipeId(recipe.getId()), receptionRepo.isLikedBy(recipe.getId(), SessionManager.getUserId()))));
             } catch (ZioException e) {
-                throw new ZioRunTimeException(new Error(515, "NO_SESSION", 1));
+                throw new ZioRunTimeException(new Error(515, 1, "NO_SESSION"));
             }
         }).toList();
     }
@@ -71,5 +70,28 @@ public class ClientService {
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    public void likeRecipe(Long recipeId) throws ZioException {
+        var userId = SessionManager.getUserId();
+
+        Reception reception = receptionRepo.findById(recipeId).orElseThrow(() -> new RuntimeException("Recipe not found"));
+
+        Optional<Likes> existingLike = reception.getLikes()
+                .stream()
+                .filter(like -> like.getAuthorId().equals(userId))
+                .findFirst();
+
+        if (existingLike.isPresent()) {
+            reception.getLikes().remove(existingLike.get());
+            reception.setLikesCount(Math.max(0, reception.getLikesCount() - 1));
+        }
+
+        Likes like = new Likes();
+        like.setAuthorId(userId);
+        like.setRecipeId(reception);
+        reception.getLikes().add(like);
+        reception.setLikesCount(reception.getLikesCount() + 1);
+
     }
 }

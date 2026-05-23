@@ -7,8 +7,9 @@ import com.zio.ingred.data.entity.Ingred;
 public class ObjectMapper {
 
     public static GeneralDTO toGenDTO(Ingred ingred) {
-        return new GeneralDTO(ingred.getId(), ingred.getName(), ingred.getImgUrl());
+        return new GeneralDTO(ingred.getId(), ingred.getName(), ingred.getImgUrl(), ingred.getUnit(), null);
     }
+
     public static IngredDTO toDTO(Ingred ingred) {
         return new IngredDTO(ingred.getId(), ingred.getName(), ingred.getImgUrl(), ingred.getCategory(), ingred.getUnit(), ingred.getAllergen());
     }

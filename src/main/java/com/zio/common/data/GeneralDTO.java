@@ -14,8 +14,8 @@ public class GeneralDTO implements Comparable<GeneralDTO> {
     private String name;
 
     /// optionals
-    private Units unit;
     private String imgUrl;
+    private Units unit;
     private String authorName;
 
     public GeneralDTO(Long id, String name) {

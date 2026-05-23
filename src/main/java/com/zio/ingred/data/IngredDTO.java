@@ -26,11 +26,12 @@ public class IngredDTO {
         this.id = id;
     }
 
-    public IngredDTO(Long id, String name, String imgUrl, Category category, Units unit) {
+    public IngredDTO(Long id, String name, String imgUrl, Category category, Units unit, Allergen allergen) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
         this.category = category;
         this.unit = unit;
+        this.allergen = allergen;
     }
 }

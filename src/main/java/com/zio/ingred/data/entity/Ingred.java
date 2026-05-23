@@ -27,7 +27,7 @@ public class Ingred {
     private Units unit;
     @Enumerated
     @Column(nullable = false)
-    private Allergen allergen;
+    private Allergen allergen = Allergen.NONE;
 
     @Embedded
     private Nutrition nutrition;

@@ -91,15 +91,19 @@ public class CreationService {
     private RecipeMetas populateMetas(RecipeDTO recipeDTO) {
         RecipeMetas metas = mapper.map(recipeDTO.getMetas(), RecipeMetas.class);
         metas.setRecipeId(recipeDTO.getId());
-        recipeDTO.getDetails().getIngredients().forEach(dto -> dto.setIngred(ObjectMapper.toDTO(ingredRepo.findById(dto.getIngred().getId()).get())));
+        recipeDTO.getDetails().getIngredients().forEach(dto -> dto.setIngred(ObjectMapper.toDTOWithNutrition(ingredRepo.findById(dto.getIngred().getId()).get())));
 
         var ingreds = recipeDTO.getDetails().getIngredients();
         metas.setDiet(findDiet(ingreds.stream().map(dto -> dto.getIngred().getCategory()).toList()));
         metas.setAllergens(EnumSet.of(Allergen.NONE));
-        ingreds.forEach(dto -> metas.getAllergens().add(dto.getIngred().getAllergen()));
+
+        ingreds.forEach(dto -> {
+            metas.getAllergens().add(dto.getIngred().getAllergen());
+        });
 
         Nutrition nutrition = ingreds.stream().map(IngredQuantityDTO::calculateNutrition).reduce(new Nutrition(), Nutrition::add);
         metas.setNutrition(nutrition);
+
 
         return metas;
     }
@@ -117,10 +121,7 @@ public class CreationService {
     }
 
     private List<IngredQuantity> getIngredList(List<IngredQuantityDTO> ingredients, RecipeDetails details) {
-
-        return ingredients.stream().map(iq ->
-                        new IngredQuantity(ingredRepo.findById(iq.getIngred().getId()).orElseThrow(() -> new ZioRunTimeException(new Error(404, 4, "NO_SUCH_INGRED"))).getId(), iq.getQuantity(), details))
-                .toList();
+        return ingredients.stream().map(iq -> new IngredQuantity(iq.getIngred().getId(), iq.getQuantity(), details)).toList();
     }
 
     /// ///////////// CDN

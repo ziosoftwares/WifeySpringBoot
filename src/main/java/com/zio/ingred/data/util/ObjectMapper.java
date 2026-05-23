@@ -10,7 +10,7 @@ public class ObjectMapper {
         return new GeneralDTO(ingred.getId(), ingred.getName(), ingred.getImgUrl());
     }
     public static IngredDTO toDTO(Ingred ingred) {
-        return new IngredDTO(ingred.getId(), ingred.getName(), ingred.getImgUrl(), ingred.getCategory(), ingred.getUnit());
+        return new IngredDTO(ingred.getId(), ingred.getName(), ingred.getImgUrl(), ingred.getCategory(), ingred.getUnit(), ingred.getAllergen());
     }
 
 }

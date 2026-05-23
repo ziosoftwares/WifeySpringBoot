@@ -15,4 +15,5 @@ public class WifeyApplication {
     public static void main(String[] args) {
         SpringApplication.run(WifeyApplication.class, args);
     }
+
 }

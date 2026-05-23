@@ -25,8 +25,7 @@ public class Preferences {
     @Id
     private Long userId;
 
-    @Convert(converter = DietConverter.class)
-    private EnumSet<Diet> diets;
+    private Diet diet;
     @Convert(converter = CuisineConverter.class)
     private EnumSet<Cuisine> cuisines;
     @Convert(converter = AllergenConverter.class)

@@ -1,6 +1,6 @@
 package com.zio.recipe.controller;
 
-import com.zio.common.data.dto.GeneralDTO;
+import com.zio.common.data.GeneralDTO;
 import com.zio.recipe.data.InstructionDTO;
 import com.zio.recipe.data.RecipeDTO;
 import com.zio.recipe.service.RecipeQueryService;

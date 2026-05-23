@@ -9,4 +9,9 @@ public class ZioRunTimeException extends RuntimeException {
         super(error.getMessage());
         this.error = error;
     }
+
+    public ZioRunTimeException(ZioException ex) {
+        super(ex.getMessage());
+        this.error = ex.error;
+    }
 }

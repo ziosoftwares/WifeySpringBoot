@@ -1,9 +1,12 @@
 package com.zio.recipe.repo;
 
+import com.zio.recipe.data.entity.Likes;
 import com.zio.recipe.data.entity.Reception;
 import com.zio.recipe.data.entity.RecipeDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
 
 public interface ReceptionRepo extends JpaRepository<Reception, Long> {
 

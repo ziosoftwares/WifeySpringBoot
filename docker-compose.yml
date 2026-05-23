@@ -1,0 +1,32 @@
+services:
+
+  wifey:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wifey
+    env_file:
+      - .local/dev.env
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+      - wifey-ai
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  wifey-ai:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile
+    container_name: wifey-ai
+    env_file:
+      - .local/dev.env
+    ports:
+      - "8002:8002"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"

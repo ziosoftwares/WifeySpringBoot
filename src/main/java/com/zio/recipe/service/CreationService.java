@@ -5,7 +5,6 @@ import com.zio.ingred.data.entity.Category;
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.ingred.data.entity.Nutrition;
 import com.zio.ingred.repo.IngredRepo;
-import com.zio.plan.repo.MealRepo;
 import com.zio.recipe.data.IngredQuantityDTO;
 import com.zio.recipe.data.entity.*;
 import com.zio.recipe.data.util.ObjectMapper;
@@ -41,8 +40,6 @@ public class CreationService {
     IngredRepo ingredRepo;
     @Autowired
     AuthorRepo authorRepo;
-    @Autowired
-    MealRepo mealRepo;
     @Autowired
     RecipeRepo recipeRepo;
     @Autowired
@@ -122,7 +119,7 @@ public class CreationService {
     private List<IngredQuantity> getIngredList(List<IngredQuantityDTO> ingredients, RecipeDetails details) {
 
         return ingredients.stream().map(iq ->
-                        new IngredQuantity(ingredRepo.findById(iq.getIngred().getId()).orElseThrow(() -> new ZioRunTimeException(new Error(404, "NO_SUCH_INGRED", 4))).getId(), iq.getQuantity(), details))
+                        new IngredQuantity(ingredRepo.findById(iq.getIngred().getId()).orElseThrow(() -> new ZioRunTimeException(new Error(404, 4, "NO_SUCH_INGRED"))).getId(), iq.getQuantity(), details))
                 .toList();
     }
 
@@ -141,13 +138,13 @@ public class CreationService {
             });
             return true;
         } catch (IOException e) {
-            throw new ZioException(new Error(510, "UNABLE_TO_PERSIST", 1));
+            throw new ZioException(new Error(510, 1, "UNABLE_TO_PERSIST"));
         }
     }
 
     public void updateRecipeImg(String mimeType, Long recipeId) throws ZioException {
         String extension = "." + mimeType.substring(mimeType.lastIndexOf('/') + 1);
-        recipeRepo.findById(recipeId).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_RECIPE", 3)))
+        recipeRepo.findById(recipeId).orElseThrow(() -> new ZioException(new Error(404, 3, "NO_SUCH_RECIPE")))
                 .setImgUrl("recipeImages/recipe" + recipeId + extension);
 
     }

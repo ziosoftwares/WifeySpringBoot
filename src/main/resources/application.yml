@@ -1,6 +1,13 @@
 spring:
+  profiles:
+    active: "dev"
   application:
     name: wifey
+  datasource:
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
+#    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,10 +22,25 @@ spring:
       max-request-size: 10MB
   jackson:
     default-property-inclusion: non_null
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+  cache:
+    type: redis
+    redis.time-to-live: 3600000
+
+server:
+  port: 8001
 
 ai:
-  url: ""
-  method: ""
+  url: ${AI_URL}
+
+s3:
+  url: ${S3URL}
+  bucket: ${S3BUCKET}
+  keyid: ${S3KEYID}
+  key: ${S3KEY}
 
 content:
   recipe: "content/recipe"

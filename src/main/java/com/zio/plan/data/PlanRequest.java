@@ -1,5 +1,6 @@
-package com.zio.common.data.dto;
+package com.zio.plan.data;
 
+import com.zio.common.data.RecipeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class MealsRequest {
-
+@NoArgsConstructor
+public class PlanRequest {
     private Integer days;
-    private List<GeneralDTO> options;
+    private List<RecipeInfo> recipes;
 }

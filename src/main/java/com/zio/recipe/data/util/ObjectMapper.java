@@ -1,6 +1,6 @@
 package com.zio.recipe.data.util;
 
-import com.zio.common.data.dto.GeneralDTO;
+import com.zio.common.data.GeneralDTO;
 import com.zio.ingred.data.IngredDTO;
 import com.zio.ingred.data.entity.Ingred;
 import com.zio.recipe.data.*;
@@ -25,8 +25,27 @@ public class ObjectMapper {
         return toRecipeDTO(recipe, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
-    public static RecipeDTO toRecipeDTO(Recipe recipe, Optional<Author> author, Optional<ReceptionDTO> reception) {
-        return toRecipeDTO(recipe, author, Optional.empty(), Optional.empty(), reception);
+    public static RecipeCard toRecipeCard(Recipe recipe, Optional<Author> author, Optional<RecipeMetas> metas, Optional<ReceptionDTO> reception) {
+        RecipeCard card = new RecipeCard();
+        card.setId(recipe.getId());
+        card.setName(recipe.getName());
+        card.setImgUrl(recipe.getImgUrl());
+
+        author.ifPresent(auth -> {
+            card.setAuthorId(auth.getUserId());
+            card.setAuthorName(auth.getUserName());
+        });
+
+        metas.ifPresent(recipeMetas -> {
+            card.setDiet(recipeMetas.getDiet());
+            card.setDuration(recipeMetas.getDuration());
+        });
+
+        reception.ifPresent(recep -> {
+            card.setLikesCount(recep.getLikesCount());
+            card.setLiked(recep.isLiked());
+        });
+        return card;
     }
 
     public static RecipeDTO toRecipeDTO(Recipe recipe, Optional<Author> author, Optional<RecipeMetas> metas, Optional<List<IngredQuantity>> ingredQuantity, Optional<ReceptionDTO> reception) {

@@ -25,7 +25,7 @@ public class Response<T> {
     }
 
     public static Response error(HttpStatus httpStatus, String message, int errorCode) {
-        Error error = new Error(message, errorCode);
+        Error error = new Error(errorCode, message);
         return new Response(httpStatus, error);
     }
 

@@ -29,12 +29,6 @@ public class AdminController {
 
     /// ///////////// one shot creators to init db
 
-    /*@PostMapping("meals")
-    public ResponseEntity<Void> addMeals(@RequestBody List<ArrayList<Long>> mealList) throws ZioException {
-        for (ArrayList<Long> ids : mealList) creationService.makeMeal(ids);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }*/
-
     @PostMapping("recipes")
     public ResponseEntity<Void> addRecipes(@RequestBody List<RecipeDTO> recipes) throws ZioException {
         for (var recipe : recipes) creationService.makeRecipe(recipe);

@@ -16,10 +16,8 @@ import java.util.EnumSet;
 public class PreferencesDTO {
 
     private Long userId;
-    //    Integer maxTime;
-//    Difficulty difficulty;
 
-    private EnumSet<Diet> diets;
+    private Diet diet;
     private EnumSet<Cuisine> cuisines;
     private EnumSet<Allergen> allergens;
 

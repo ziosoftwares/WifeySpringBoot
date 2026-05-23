@@ -22,13 +22,13 @@ public class AspectExceptions {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Error> generalException(Exception exception) {
         log.error(exception.getMessage());
-        return new ResponseEntity<>(new Error(exception.getMessage(), 1), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new Error(1, exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Error> generalRTException(RuntimeException exception) {
         log.error(exception.getMessage());
-        return new ResponseEntity<>(new Error("UnknownError", 1), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new Error(1, "UnknownError"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ZioException.class)

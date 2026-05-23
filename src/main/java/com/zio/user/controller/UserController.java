@@ -7,6 +7,7 @@ import com.zio.user.service.UserService;
 import com.zio.common.util.SessionManager;
 import com.zio.common.util.ZioException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,25 +17,21 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    private Long userId = -1L;
 
     @GetMapping("verify")
     public Response<Boolean> verify() throws ZioException {
-        userId = SessionManager.getUserId();
-        return Response.ok(userService.verify(userId));
+        return Response.ok(userService.verify(SessionManager.getUserId()));
     }
 
     @PostMapping("prefs")
-    public ResponseEntity<String> updatePrefs(@RequestBody Preferences preferences) throws ZioException {
-        userId = SessionManager.getUserId();
-        preferences.setUserId(userId);
+    public ResponseEntity<Void> updatePrefs(@RequestBody Preferences preferences) throws ZioException {
+        preferences.setUserId(SessionManager.getUserId());
         userService.updatePrefs(preferences);
-        return ResponseEntity.ok("done");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("prefs")
     public Response<PreferencesDTO> getPrefs() throws ZioException {
-        userId = SessionManager.getUserId();
-        return Response.ok(userService.getPreference(userId));
+        return Response.ok(userService.getPreference(SessionManager.getUserId()));
     }
 }

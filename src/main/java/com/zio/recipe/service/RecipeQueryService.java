@@ -86,14 +86,10 @@ public class RecipeQueryService {
         return instructions.stream().map(ins -> new InstructionDTO(ins.getId(), ins.getDuration(), ins.getInstruction())).toList();
     }
 
-    public List<RecipeInfo> getRecipesByPreference() throws ZioException {
-//        Preferences prefs = preferencesRepo.findById(SessionManager.getUserId()).orElseThrow(() -> new ZioException(new Error(404, "NO_SUCH_USER", 1)));
-        Preferences prefs = preferencesRepo.findById(1L).orElseThrow();
-        System.out.println("prefs.getDiet() = " + prefs.getDiet());
+    public List<RecipeInfo> getRecipesByPreference(Long userId) throws ZioException {
+        Preferences prefs = preferencesRepo.findById(userId).orElseThrow(() -> new ZioException(new Error(404, 1, "NO_SUCH_USER")));
         var cuisines = new CuisineConverter().toOrdinalsList(prefs.getCuisines());
-        System.out.println("cuisines = " + cuisines);
         var allergens = new AllergenConverter().convertToDatabaseColumn(prefs.getAllergens());
-        System.out.println("allergens = " + allergens);
 
         List<RecipeMetas> metas = metasRepo.findByPreference(prefs.getDiet(), cuisines, allergens);
 

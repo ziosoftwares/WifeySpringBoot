@@ -59,7 +59,7 @@ public class PlanService {
 
     public List<DayPlanFull> makePlanForDays(Integer days) throws ZioException {
 
-        List<RecipeInfo> recipes = recipeService.getRecipesByPreference();
+        List<RecipeInfo> recipes = recipeService.getRecipesByPreference(SessionManager.getUserId());
         var dayPlanRaw = aiClient.generate(new PlanRequest(days, recipes)).block().getDayPlans();
 
         return getheridiot(dayPlanRaw);

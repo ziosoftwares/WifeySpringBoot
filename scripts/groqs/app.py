@@ -5,7 +5,6 @@ import os
 from fastapi import FastAPI, HTTPException
 from groq import Groq
 
-import local_secrets as secrets
 from schemas import MealPlanResponse, PlanRequest
 
 logging.basicConfig(level=logging.INFO)

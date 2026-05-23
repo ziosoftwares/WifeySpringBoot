@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 
 from fastapi import FastAPI, HTTPException
 from groq import Groq
@@ -33,7 +34,9 @@ Rules:
 
 # ── groq client ───────────────────────────────────────────────────────────────
 
-client = Groq(api_key=secrets.groq_key)
+# api_key = secrets.groq_key
+api_key = os.getenv("GROQ_API_KEY")
+client = Groq(api_key=api_key)
 
 # ── core planner ──────────────────────────────────────────────────────────────
 

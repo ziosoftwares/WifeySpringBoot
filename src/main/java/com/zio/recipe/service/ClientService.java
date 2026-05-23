@@ -85,13 +85,15 @@ public class ClientService {
         if (existingLike.isPresent()) {
             reception.getLikes().remove(existingLike.get());
             reception.setLikesCount(Math.max(0, reception.getLikesCount() - 1));
+        } else {
+            Likes like = new Likes();
+            like.setAuthorId(userId);
+            like.setRecipeId(reception);
+            reception.getLikes().add(like);
+            reception.setLikesCount(reception.getLikesCount() + 1);
         }
 
-        Likes like = new Likes();
-        like.setAuthorId(userId);
-        like.setRecipeId(reception);
-        reception.getLikes().add(like);
-        reception.setLikesCount(reception.getLikesCount() + 1);
+        receptionRepo.save(reception);
 
     }
 }

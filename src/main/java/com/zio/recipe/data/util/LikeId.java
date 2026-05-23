@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class LikeId implements Serializable {
-    private Integer authorId;
+    private Long authorId;
     private Long recipeId;
 
     @Override

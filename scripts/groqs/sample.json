@@ -1,0 +1,149 @@
+{
+  "days": 3,
+  "recipes": [
+    {
+      "id": 21,
+      "name": "Dosa",
+      "authorId": 1,
+      "duration": 15,
+      "difficulty": "EASY",
+      "mealType": "BREAKFAST",
+      "role": "MAIN",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 120.45,
+        "protein": 26.016,
+        "carbs": 28.09,
+        "fat": 36.002
+      }
+    },
+    {
+      "id": 22,
+      "name": "Tomato Chutney",
+      "authorId": 1,
+      "duration": 15,
+      "difficulty": "EASY",
+      "mealType": "BREAKFAST",
+      "role": "SIDE",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 521.0,
+        "protein": 63.5,
+        "carbs": 118.1,
+        "fat": 73.8
+      }
+    },
+    {
+      "id": 23,
+      "name": "Coconut Chutney",
+      "authorId": 1,
+      "duration": 10,
+      "difficulty": "EASY",
+      "mealType": "BREAKFAST",
+      "role": "SIDE",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 1167.6,
+        "protein": 40.04,
+        "carbs": 179.1,
+        "fat": 56.4
+      }
+    },
+    {
+      "id": 24,
+      "name": "White Rice",
+      "authorId": 1,
+      "duration": 20,
+      "difficulty": "EASY",
+      "mealType": "ANY",
+      "role": "MAIN",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 730.0,
+        "protein": 14.2,
+        "carbs": 160.0,
+        "fat": 1.2
+      }
+    },
+    {
+      "id": 25,
+      "name": "Vegetable Sambar",
+      "authorId": 1,
+      "duration": 35,
+      "difficulty": "MEDIUM",
+      "mealType": "ANY",
+      "role": "SIDE",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 1007.4,
+        "protein": 92.774,
+        "carbs": 206.26,
+        "fat": 77.576
+      }
+    },
+    {
+      "id": 26,
+      "name": "Chapati",
+      "authorId": 1,
+      "duration": 20,
+      "difficulty": "EASY",
+      "mealType": "ANY",
+      "role": "MAIN",
+      "cuisine": "NORTH_INDIAN",
+      "nutrition": {
+        "calories": 968.0,
+        "protein": 78.0,
+        "carbs": 200.0,
+        "fat": 76.0
+      }
+    },
+    {
+      "id": 27,
+      "name": "Vegetable Upma",
+      "authorId": 1,
+      "duration": 20,
+      "difficulty": "EASY",
+      "mealType": "BREAKFAST",
+      "role": "MAIN",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 1010.56,
+        "protein": 80.22,
+        "carbs": 214.26,
+        "fat": 75.87
+      }
+    },
+    {
+      "id": 28,
+      "name": "Vegetable Kurma",
+      "authorId": 1,
+      "duration": 35,
+      "difficulty": "MEDIUM",
+      "mealType": "BREAKFAST",
+      "role": "SIDE",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 787.1,
+        "protein": 68.03,
+        "carbs": 144.8,
+        "fat": 90.67
+      }
+    },
+    {
+      "id": 29,
+      "name": "Rava Dosa",
+      "authorId": 1,
+      "duration": 15,
+      "difficulty": "EASY",
+      "mealType": "BREAKFAST",
+      "role": "MAIN",
+      "cuisine": "SOUTH_INDIAN",
+      "nutrition": {
+        "calories": 930.0,
+        "protein": 54.0,
+        "carbs": 191.0,
+        "fat": 39.0
+      }
+    }
+  ]
+}

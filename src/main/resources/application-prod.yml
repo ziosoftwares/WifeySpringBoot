@@ -3,9 +3,6 @@ spring:
     name: wifey
 
   datasource:
-    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
-    username: ${MYSQLUSER}
-    password: ${MYSQLPASSWORD}
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
@@ -47,12 +44,6 @@ content:
 
 jwt:
   secret: ${JWT_SECRET}
-
-s3:
-  url: ${S3URL}
-  bucket: ${S3BUCKET}
-  keyid: ${S3ID}
-  key: ${S3KEY}
 
 logging:
   include-application-name: false

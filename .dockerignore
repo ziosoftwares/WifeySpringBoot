@@ -1,0 +1,19 @@
+# Ignore Gradle, ide, git folders
+.gradle/
+gradle.properties
+build/
+.idea/
+.kotlin/
+.git/
+*.iml
+
+# Ignore test results and local configuration files
+.classpath
+.project
+.settings
+bin/
+out/
+target/
+
+#project specific
+scripts/

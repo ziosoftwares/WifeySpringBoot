@@ -1,11 +1,10 @@
 spring:
   profiles:
-    active: "dev"
+    active: ${SPRING_PROFILES_ACTIVE}
   application:
     name: wifey
   datasource:
     url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
-#    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
     username: ${MYSQLUSER}
     password: ${MYSQLPASSWORD}
   jpa:
@@ -24,8 +23,7 @@ spring:
     default-property-inclusion: non_null
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      url: ${REDIS_URL}
   cache:
     type: redis
     redis.time-to-live: 3600000
